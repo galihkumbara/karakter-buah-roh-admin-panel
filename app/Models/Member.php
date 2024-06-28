@@ -69,6 +69,13 @@ class Member extends Model
 		return $this->belongsTo(Education::class);
 	}
 
+	public function modules()
+	{
+		return $this->belongsToMany(Module::class, 'member_modules')
+					->withPivot('is_active')
+					->withTimestamps();
+	}
+
 	public function ethnic()
 	{
 		return $this->belongsTo(Ethnic::class);
@@ -87,5 +94,17 @@ class Member extends Model
 	public function transactions()
 	{
 		return $this->hasMany(Transaction::class);
+	}
+
+	public function member_questions()
+	{
+		return $this->hasMany(MemberQuestion::class);
+	}
+
+	public function questions()
+	{
+		return $this->belongsToMany(Question::class, 'member_questions')
+					->withPivot('answer')
+					->withTimestamps();
 	}
 }

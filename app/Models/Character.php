@@ -8,6 +8,8 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 
 /**
  * Class Character
@@ -26,8 +28,13 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Character extends Model
+class Character extends Model implements  Sortable
 {
+	use SortableTrait;
+	public $sortable = [
+        'order_column_name' => 'order_number',
+        'sort_when_creating' => true,
+    ];
 	protected $table = 'characters';
 
 	protected $casts = [
@@ -49,4 +56,12 @@ class Character extends Model
 	{
 		return $this->belongsTo(Module::class);
 	}
+
+	public function quizzes()
+	{
+		return $this->hasMany(Quiz::class);
+	}
+
+
+
 }

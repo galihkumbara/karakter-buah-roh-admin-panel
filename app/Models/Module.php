@@ -9,6 +9,8 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 
 /**
  * Class Module
@@ -28,9 +30,14 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Module extends Model
+class Module extends Model implements Sortable
 {
+    use SortableTrait;
 	protected $table = 'modules';
+	public $sortable = [
+        'order_column_name' => 'order_number',
+        'sort_when_creating' => true,
+    ];
 
 	protected $casts = [
 		'is_active' => 'bool',
@@ -62,4 +69,24 @@ class Module extends Model
 					->withPivot('id', 'price')
 					->withTimestamps();
 	}
+
+	public function members()
+	{
+		return $this->belongsToMany(Member::class, 'member_modules')
+					->withPivot('is_active')
+					->withTimestamps();
+	}
+
+	public function member_modules()
+	{
+		return $this->hasMany(MemberModule::class);
+	}
+
+	public function transaction_modules()
+	{
+		return $this->hasMany(TransactionModule::class);
+	}
+
+
+
 }

@@ -61,4 +61,9 @@ class Transaction extends Model
 					->withPivot('id', 'price')
 					->withTimestamps();
 	}
+
+	public function transaction_modules()
+	{
+		return $this->hasMany(TransactionModule::class);
+	}
 }

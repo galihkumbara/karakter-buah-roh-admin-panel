@@ -18,6 +18,9 @@ class EthnicResource extends Resource
     protected static ?string $model = Ethnic::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $label = 'Suku';
+    protected static ?string $navigationGroup = 'Data Master';
+    
     
     public static function form(Form $form): Form
     {
@@ -25,6 +28,7 @@ class EthnicResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->label('Nama Suku')
                     ->maxLength(255),
             ]);
     }

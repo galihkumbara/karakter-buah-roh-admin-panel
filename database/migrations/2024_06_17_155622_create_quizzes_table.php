@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->boolean('is_active')->default(true);
             $table->integer('order_number')->default(9999);
-            $table->foreignId('module_id')->constrained()->onDelete('cascade');
+            $table->foreignId('character_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

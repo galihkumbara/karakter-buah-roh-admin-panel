@@ -43,9 +43,9 @@ class Quiz extends Model
 		'module_id'
 	];
 
-	public function module()
+	public function character()
 	{
-		return $this->belongsTo(Module::class);
+		return $this->belongsTo(Character::class);
 	}
 
 	public function questions()
