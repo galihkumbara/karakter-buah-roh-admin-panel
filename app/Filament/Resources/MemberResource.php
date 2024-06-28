@@ -6,6 +6,7 @@ use App\Filament\Exports\MemberExporter;
 use App\Filament\Resources\MemberResource\Pages;
 use App\Filament\Resources\MemberResource\RelationManagers;
 use App\Filament\Resources\MemberResource\RelationManagers\ModulesRelationManager;
+use App\Http\Controllers\ExportController;
 use App\Models\Member;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -17,6 +18,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 use Spatie\EloquentSortable\SortableTrait;
 class MemberResource extends Resource
 {
@@ -117,7 +119,9 @@ class MemberResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    ExportBulkAction::make(MemberExporter::class),
+                    Tables\Actions\BulkAction::make('Export')
+                        ->action(fn(Collection $records) => ExportController::exportModulesData($records)) 
+                    
                 ]),
             ]);
     }

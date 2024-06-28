@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class ExportController extends Controller
 {
-    public function exportModulesData($members){
+    public static function exportModulesData($members){
         $csvConvert = [
             "Nama Lengkap", "Email", "Tahun lahir", "Agama", "Suku", "Telp", "Alamat", "Kota", 
             "Institusi", "Pendidikan", "Modul", "Karakter", "Timestamp pengisian_H1", "H1_Q1", 
