@@ -36,41 +36,57 @@ class ExportController extends Controller
         fputcsv($handle, $csvConvert);
 
         foreach ($members as $member) {
-            $finishedCharacter = Character::whereIn('id', Quiz::whereIn('id', $member->questions->pluck('quiz_id'))->pluck('character_id')->toArray())->get();
+            $finishedCharacter = Character::whereIn('id', Quiz::whereIn('id', $member->quizzes->pluck('quiz_id'))->pluck('character_id')->toArray())->get();
             foreach ($finishedCharacter as $character) {
                 $exportTemplate = array_fill_keys($csvConvert, null);
                 
                 $exportTemplate["Nama Lengkap"] = $member->name;
                 $exportTemplate["Email"] = $member->email;
                 $exportTemplate["Tahun lahir"] = $member->birthdate->format('D, d M Y');
-                $exportTemplate["Agama"] = $member->religion->name;
-                $exportTemplate["Suku"] = $member->ethnic->name;
+                $exportTemplate["Agama"] = $member->religion ? $member->religion->name : "";
+                $exportTemplate["Suku"] = $member->ethnic ? $member->ethnic->name : "";
                 $exportTemplate["Alamat"] = $member->address;
-                $exportTemplate["Institusi"] = $member->institution->name;
-                $exportTemplate["Pendidikan"] = $member->education->name;
+                $exportTemplate["Institusi"] = $member->institution ? $member->institution->name : "";
+                $exportTemplate["Pendidikan"] = $member->education ? $member->education->name : "";
                 $exportTemplate["Karakter"] = $character->name;
-                $exportTemplate["Modul"] = $character->module->name;
+                $exportTemplate["Modul"] = $character->module ? $character->module->name : "";
 
                 $quizzes = $character->quizzes->take(7);
+                $totalBerhasil = 0;
+                $totalGagal = 0;
                 foreach ($quizzes as $key => $quiz) {
+                    $berhasil = 0;
+                    $gagal = 0;
                     $questionsSorted = $quiz->questions->sortBy('order_number');
-                    $exportTemplate["Timestamp pengisian_H" . ($key + 1)] = $quiz->created_at->format('D, d M Y H:i:s');
+                    $exportTemplate["Timestamp pengisian_H" . ($key + 1)] = $member->quizzes->where('quiz_id', $quiz->id)->first() ? $member->quizzes->where('quiz_id', $quiz->id)->first()->created_at : ""    ;
                     foreach ($questionsSorted as $key2 => $question) {
                         $memberAnswer = $member->questions->where('id', $question->id)->first();
                         if ($memberAnswer) {
                             $exportTemplate["H" . ($key + 1) . "_Q" . ($key2 + 1)] = $memberAnswer->pivot->answer;
+                            if ($memberAnswer->pivot->answer == 1) {
+                                $berhasil++;
+                            } elseif($memberAnswer->pivot->answer == 0) {
+                                $gagal++;
+                            }
                         }
                     }
-                    $exportTemplate["H" . ($key + 1) . "_Q8"] = $quiz->open_answer;
-                    $exportTemplate["Total_H" . ($key + 1) . "_Berhasil"] = $quiz->questions->where('answer', '1')->count();
-                    $exportTemplate["Total_H" . ($key + 1) . "_Gagal"] = $quiz->questions->where('answer', '0')->count();
+                    if($member->quizzes->where('quiz_id', $quiz->id)->first()){
+                        $exportTemplate["H" . ($key + 1) . "_Q8"] = $member->quizzes->where('quiz_id', $quiz->id)->first()->open_answer;
+                    }
+
+                    $exportTemplate["Total_H" . ($key + 1) . "_Berhasil"] = $berhasil;
+                    $exportTemplate["Total_H" . ($key + 1) . "_Gagal"] = $gagal;
+                    $totalBerhasil += $berhasil;
+                    $totalGagal += $gagal;
                 }
 
-                $exportTemplate["Total_H1_H7_Berhasil"] = $character->quizzes->where('answer', '1')->count();
-                $exportTemplate["Total_H1_H7_Gagal"] = $character->quizzes->where('answer', '0')->count();
+                $exportTemplate["Total_H1_H7_Berhasil"] = $totalBerhasil;
+                $exportTemplate["Total_H1_H7_Gagal"] = $totalGagal;
+
 
                 // Write the data row
                 fputcsv($handle, $exportTemplate);
+
             }
         }
 

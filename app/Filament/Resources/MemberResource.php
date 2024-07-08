@@ -120,8 +120,9 @@ class MemberResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('Export')
+                        ->icon('tni-csv')
+                        ->color('secondary')
                         ->action(fn(Collection $records) => ExportController::exportModulesData($records)) 
-                    
                 ]),
             ]);
     }

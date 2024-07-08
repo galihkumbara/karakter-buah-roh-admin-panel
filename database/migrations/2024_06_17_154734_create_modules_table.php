@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('color')->default('#000000');
             $table->integer('order_number')->default(9999);
             $table->integer('price')->default(0);
+            $table->text('video_url')->nullable();
             $table->timestamps();
         });
     }

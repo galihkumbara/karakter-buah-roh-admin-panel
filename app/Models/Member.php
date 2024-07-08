@@ -107,4 +107,9 @@ class Member extends Model
 					->withPivot('answer')
 					->withTimestamps();
 	}
+
+	public function quizzes()
+	{
+		return $this->hasMany(MemberQuiz::class);
+	}
 }
