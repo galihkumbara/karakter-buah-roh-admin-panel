@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use App\Helpers\ResponseHelper;
+use Exception;
 
 class TransactionController extends Controller
 {
@@ -28,10 +29,12 @@ class TransactionController extends Controller
             ]);
             
             $transaction = Transaction::create($validatedData);
-
+            
             return ResponseHelper::success($transaction, 'Transaction created successfully', 201);
         } catch (ValidationException $e) {
             return ResponseHelper::error($e->errors(), 422);
+        } catch (Exception $e) {
+            return ResponseHelper::error(['message' => $e->getMessage()], 500);
         }
     }
 
