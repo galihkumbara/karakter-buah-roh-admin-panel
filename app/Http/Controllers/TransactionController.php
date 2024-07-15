@@ -32,7 +32,7 @@ class TransactionController extends Controller
             
             return ResponseHelper::success($transaction, 'Transaction created successfully', 201);
         } catch (ValidationException $e) {
-            return ResponseHelper::error($e->errors(), 422);
+            return ResponseHelper::error($e->errors(),"Validation Error", 422);
         } catch (Exception $e) {
             return ResponseHelper::error(['message' => $e->getMessage()], 500);
         }
