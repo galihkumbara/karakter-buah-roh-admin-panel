@@ -2,11 +2,17 @@
 
 use App\Models\Member;
 use App\Models\MemberQuiz;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect('/admin');
 });
+Route::get('/login', function () {
+    return redirect('admin');
+})->name('login');
 
 
 Route::get('/fixer', function(){
@@ -27,3 +33,21 @@ Route::get('/fixer', function(){
         }
     }
 });
+
+Route::post('/api/generate-token', function (Request $request) {
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required'
+    ]);
+    $credentials = $request->only('email', 'password');
+
+    // Attempt to authenticate the user
+    if (Auth::attempt($credentials)) {
+        /** @var \App\Models\User $user **/
+        $user = Auth::user();
+        // Create the token with a specified name
+        $token = $user->createToken('token')->plainTextToken;
+        return response()->json(['token' => $token]);
+    }
+    return response()->json(['error' => 'Unauthorized'], 401);
+})->withoutMiddleware(VerifyCsrfToken::class);

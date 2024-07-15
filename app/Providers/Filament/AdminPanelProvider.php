@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers\Filament;
+use Rupadana\ApiService\ApiServicePlugin;
 
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -53,6 +54,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->plugin(\TomatoPHP\FilamentApi\FilamentAPIPlugin::make());
     }
 }

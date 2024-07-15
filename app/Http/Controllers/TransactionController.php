@@ -1,66 +1,61 @@
 <?php
 
+// app/Http/Controllers/TransactionController.php
+
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
-use App\Http\Requests\StoreTransactionRequest;
-use App\Http\Requests\UpdateTransactionRequest;
+use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return Transaction::all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'proof_of_payment_url' => 'nullable|string|max:255',
+            'user_id' => 'nullable|integer|exists:users,id',
+            'member_id' => 'nullable|integer|exists:members,id',
+        ]);
+
+        $transaction = Transaction::create($request->all());
+
+        return response()->json($transaction, 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreTransactionRequest $request)
+    public function show($id)
     {
-        //
+        $transaction = Transaction::findOrFail($id);
+        return response()->json($transaction);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Transaction $transaction)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'description' => 'nullable|string',
+            'proof_of_payment_url' => 'nullable|string|max:255',
+            'user_id' => 'nullable|integer|exists:users,id',
+            'member_id' => 'nullable|integer|exists:members,id',
+        ]);
+
+        $transaction = Transaction::findOrFail($id);
+        $transaction->update($request->all());
+
+        return response()->json($transaction);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Transaction $transaction)
+    public function destroy($id)
     {
-        //
-    }
+        $transaction = Transaction::findOrFail($id);
+        $transaction->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTransactionRequest $request, Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
+        return response()->json(null, 204);
     }
 }
