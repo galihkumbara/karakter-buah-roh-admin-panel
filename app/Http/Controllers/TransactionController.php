@@ -1,61 +1,81 @@
 <?php
 
-// app/Http/Controllers/TransactionController.php
-
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Validation\ValidationException;
+use App\Helpers\ResponseHelper;
 
 class TransactionController extends Controller
 {
     public function index()
     {
-        return Transaction::all();
+        $transactions = Transaction::all();
+        return ResponseHelper::success($transactions);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'proof_of_payment_url' => 'nullable|string|max:255',
-            'user_id' => 'nullable|integer|exists:users,id',
-            'member_id' => 'nullable|integer|exists:members,id',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'proof_of_payment_url' => 'nullable|string|max:255',
+                'user_id' => 'nullable|integer|exists:users,id',
+                'member_id' => 'nullable|integer|exists:members,id',
+            ]);
 
-        $transaction = Transaction::create($request->all());
+            $transaction = Transaction::create($validatedData);
 
-        return response()->json($transaction, 201);
+            return ResponseHelper::success($transaction, 'Transaction created successfully', 201);
+        } catch (ValidationException $e) {
+            return ResponseHelper::error($e->errors(), 422);
+        }
     }
 
     public function show($id)
     {
-        $transaction = Transaction::findOrFail($id);
-        return response()->json($transaction);
+        try {
+            $transaction = Transaction::findOrFail($id);
+            return ResponseHelper::success($transaction);
+        } catch (ModelNotFoundException $e) {
+            return ResponseHelper::error('Transaction not found', 404);
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
-            'proof_of_payment_url' => 'nullable|string|max:255',
-            'user_id' => 'nullable|integer|exists:users,id',
-            'member_id' => 'nullable|integer|exists:members,id',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'name' => 'sometimes|required|string|max:255',
+                'description' => 'nullable|string',
+                'proof_of_payment_url' => 'nullable|string|max:255',
+                'user_id' => 'nullable|integer|exists:users,id',
+                'member_id' => 'nullable|integer|exists:members,id',
+            ]);
 
-        $transaction = Transaction::findOrFail($id);
-        $transaction->update($request->all());
+            $transaction = Transaction::findOrFail($id);
+            $transaction->update($validatedData);
 
-        return response()->json($transaction);
+            return ResponseHelper::success($transaction, 'Transaction updated successfully');
+        } catch (ModelNotFoundException $e) {
+            return ResponseHelper::error('Transaction not found', 404);
+        } catch (ValidationException $e) {
+            return ResponseHelper::error($e->errors(), 422);
+        }
     }
 
     public function destroy($id)
     {
-        $transaction = Transaction::findOrFail($id);
-        $transaction->delete();
+        try {
+            $transaction = Transaction::findOrFail($id);
+            $transaction->delete();
 
-        return response()->json(null, 204);
+            return ResponseHelper::success(null, 'Transaction deleted successfully', 204);
+        } catch (ModelNotFoundException $e) {
+            return ResponseHelper::error('Transaction not found', 404);
+        }
     }
 }
