@@ -23,10 +23,10 @@ class TransactionController extends Controller
                 'name' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'proof_of_payment_url' => 'nullable|string|max:255',
-                'user_id' => 'nullable|integer|exists:users,id',
-                'member_id' => 'nullable|integer|exists:members,id',
+                'user_id' => 'integer|exists:users,id',
+                'member_id' => 'integer|exists:members,id',
             ]);
-
+            
             $transaction = Transaction::create($validatedData);
 
             return ResponseHelper::success($transaction, 'Transaction created successfully', 201);
