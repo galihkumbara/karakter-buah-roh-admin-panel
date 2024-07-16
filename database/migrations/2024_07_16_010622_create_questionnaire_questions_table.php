@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('questionnaire_id')->constrained()->onDelete('cascade');
             $table->text('question');
-            $table->text('option_1');
-            $table->text('option_2');
-            $table->text('option_3');
-            $table->text('option_4');
-            $table->text('option_5');
+            $table->string('min_word');
+            $table->string('max_word');
+            $table->string('min_scale');
+            $table->string('max_scale');
             $table->timestamps();
         });
     }
