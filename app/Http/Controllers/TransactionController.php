@@ -26,14 +26,17 @@ class TransactionController extends Controller
                 'user_id' => 'integer|exists:users,id',
                 'member_id' => 'integer|exists:members,id',
                 'proof_of_payment_url' => 'nullable|file|max:2048|mimes:jpeg,png,pdf',
+                'module_id'=> 'required|integer|exists:modules,id'
             ]);
 
             if ($request->hasFile('proof_of_payment_url')) {
                 $validatedData['proof_of_payment_url'] = $request->file('proof_of_payment_url')->store('proof_of_payment');
             }
 
-            
+
             $transaction = Transaction::create($validatedData);
+            $transaction->modules()->attach($validatedData['module_id']);
+
             
             return ResponseHelper::success($transaction, 'Transaction created successfully', 201);
         } catch (ValidationException $e) {
@@ -62,6 +65,7 @@ class TransactionController extends Controller
                 'proof_of_payment_url' => 'nullable|file|max:2048|mimes:jpeg,png,pdf',
                 'user_id' => 'nullable|integer|exists:users,id',
                 'member_id' => 'nullable|integer|exists:members,id',
+                'module_id'=> 'required|integer|exists:modules,id'
             ]);
 
             if ($request->hasFile('proof_of_payment_url')) {
@@ -70,6 +74,8 @@ class TransactionController extends Controller
 
             $transaction = Transaction::findOrFail($id);
             $transaction->update($validatedData);
+            $transaction->modules()->detach();
+            $transaction->modules()->attach($validatedData['module_id']);
 
             return ResponseHelper::success($transaction, 'Transaction updated successfully');
         } catch (ModelNotFoundException $e) {
