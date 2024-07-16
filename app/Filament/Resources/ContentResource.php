@@ -85,16 +85,19 @@ class ContentResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('is_active')
                     ->label('Status')
-                    ->getStateUsing(fn($state) => $state ? 'Aktif' : 'Tidak Aktif'),
+                    ->formatStateUsing(fn($state) => $state ? 'Aktif' : 'Tidak Aktif'),
                 Tables\Columns\TextColumn::make('start_date')
                     ->label('Jadwal Publikasi Mulai')
                     ->dateTime()
+                    ->placeholder('N/A (Selalu Tampil)')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('end_date')
                     ->label('Jadwal Publikasi Selesai')
+                    ->placeholder('N/A (Selalu Tampil)')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('always_show')
+                Tables\Columns\TextColumn::make('always_show')
+                    ->formatStateUsing(fn($state) => $state ? 'Ya' : 'Tidak')
                     ->label('Selalu Tampil'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
