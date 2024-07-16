@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TransactionResource\Pages;
 use App\Filament\Resources\TransactionResource\RelationManagers;
+use App\Models\MemberModule;
 use App\Models\Module;
 use App\Models\Transaction;
 use Filament\Forms;
@@ -121,7 +122,24 @@ class TransactionResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('Verifikasi')
                     ->color('success')
-                    ->action(fn(Transaction $record) => $record->user_id = auth()->id()),
+                    ->action(function(Transaction $record){
+                        $record->user_id = auth()->id();
+                        $record->save();
+                        foreach($record->transaction_modules as $transaction_module){
+                            if(MemberModule::where('member_id',$record->member_id)->where('module_id',$transaction_module->module_id)->count() == 0){
+                                MemberModule::create([
+                                    'member_id' => $record->member_id,
+                                    'module_id' => $transaction_module->module_id,
+                                    'is_active' => true
+                                ]);
+                            }
+                        }
+                    })
+                    ->requiresConfirmation()
+                    ->modalHeading('Verifikasi Transaksi')
+                    ->modalDescription('Apakah Anda yakin ingin memverifikasi transaksi ini?')
+                    ->modalSubmitActionLabel('Verifikasi')
+                    ->modalCancelActionLabel('Batal'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
