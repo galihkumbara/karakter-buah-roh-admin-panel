@@ -13,7 +13,7 @@ class QuestionnaireQuestionPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class QuestionnaireQuestionPolicy
      */
     public function view(User $user, QuestionnaireQuestion $questionnaireQuestion): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class QuestionnaireQuestionPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class QuestionnaireQuestionPolicy
      */
     public function update(User $user, QuestionnaireQuestion $questionnaireQuestion): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -45,7 +45,7 @@ class QuestionnaireQuestionPolicy
      */
     public function delete(User $user, QuestionnaireQuestion $questionnaireQuestion): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class QuestionnaireQuestionPolicy
      */
     public function restore(User $user, QuestionnaireQuestion $questionnaireQuestion): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -61,6 +61,6 @@ class QuestionnaireQuestionPolicy
      */
     public function forceDelete(User $user, QuestionnaireQuestion $questionnaireQuestion): bool
     {
-        //
+        return true;
     }
 }

@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Questionnaire extends Model
 {
+	
 	protected $table = 'questionnaires';
 
 	protected $casts = [
@@ -47,5 +48,16 @@ class Questionnaire extends Model
 	public function questionnaire_questions()
 	{
 		return $this->hasMany(QuestionnaireQuestion::class);
+	}
+
+	//isEmailVerificationRequired
+	public static function isEmailVerificationRequired()
+	{
+		return false;
+	}
+	//isTenantSubscriptionRequired
+	public static function isTenantSubscriptionRequired()
+	{
+		return false;
 	}
 }

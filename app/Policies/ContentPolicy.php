@@ -13,7 +13,7 @@ class ContentPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class ContentPolicy
      */
     public function view(User $user, Content $content): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class ContentPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class ContentPolicy
      */
     public function update(User $user, Content $content): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -45,7 +45,7 @@ class ContentPolicy
      */
     public function delete(User $user, Content $content): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class ContentPolicy
      */
     public function restore(User $user, Content $content): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -61,6 +61,6 @@ class ContentPolicy
      */
     public function forceDelete(User $user, Content $content): bool
     {
-        //
+        return true;
     }
 }

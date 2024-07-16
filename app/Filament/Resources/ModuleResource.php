@@ -24,7 +24,7 @@ class ModuleResource extends Resource
 {
     use NestedResource;
     protected static ?string $model = Module::class;
-
+    protected static ?string $navigationGroup = 'Manajemen Konten';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $label = 'Modul';
     
