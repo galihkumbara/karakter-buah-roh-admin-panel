@@ -22,26 +22,26 @@ class QuestionnaireQuestionsRelationManager extends RelationManager
                     ->label('Pertanyaan')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('option_1')
-                    ->label('Label Opsi 1')
+                Forms\Components\TextInput::make('min_scale')
+                    ->label('Skala Minimal')
+                    ->numeric()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('option_2')
-                    ->label('Label Opsi 2')
+                Forms\Components\TextInput::make('max_scale')
+                    ->label('Skala Maksimal')
+                    ->required()
+                    ->numeric()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('min_word')
+                    ->label('Label Skala Terendah')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('option_3')
-                    ->label('Label Opsi 3')
+                Forms\Components\TextInput::make('max_word')
+                    ->label('Label Skala Tertinggi')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('option_4')
-                    ->label('Label Opsi 4')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('option_5')
-                    ->label('Label Opsi 5')
-                    ->required()
-                    ->maxLength(255),
+                
+               
             ]);
     }
 
@@ -53,6 +53,14 @@ class QuestionnaireQuestionsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('question')
                     ->label('Pertanyaan'),
+                Tables\Columns\TextColumn::make('min_scale')
+                    ->label('Skala Minimal'),
+                Tables\Columns\TextColumn::make('max_scale')
+                    ->label('Skala Maksimal'),
+                Tables\Columns\TextColumn::make('min_word')
+                    ->label('Label Skala Terendah'),
+                Tables\Columns\TextColumn::make('max_word')
+                    ->label('Label Skala Tertinggi'),
             ])
             
             ->filters([

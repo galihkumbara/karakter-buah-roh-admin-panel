@@ -39,21 +39,14 @@ class QuestionnaireQuestionResource extends Resource
                 Forms\Components\Textarea::make('question')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('option_1')
+                Forms\Components\Textarea::make('max_scale')
+                    ->label('Max Scale')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('option_2')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('option_3')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('option_4')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('option_5')
-                    ->required()
-                    ->columnSpanFull(),
+   
             ]);
     }
 

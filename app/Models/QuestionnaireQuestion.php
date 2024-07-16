@@ -15,11 +15,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $questionnaire_id
  * @property string $question
- * @property string $option_1
- * @property string $option_2
- * @property string $option_3
- * @property string $option_4
- * @property string $option_5
+ * @property string $min_word
+ * @property string $max_word
+ * @property string $min_scale
+ * @property string $max_scale
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
@@ -38,11 +37,10 @@ class QuestionnaireQuestion extends Model
 	protected $fillable = [
 		'questionnaire_id',
 		'question',
-		'option_1',
-		'option_2',
-		'option_3',
-		'option_4',
-		'option_5'
+		'min_word',
+		'max_word',
+		'min_scale',
+		'max_scale'
 	];
 
 	public function questionnaire()
