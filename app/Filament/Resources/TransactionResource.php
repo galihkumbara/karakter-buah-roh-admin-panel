@@ -39,7 +39,8 @@ class TransactionResource extends Resource
                     ->label('Bukti Bayar'),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user','name')
-                    ->label('Admin Penanggung Jawab'),
+                    ->label('Diverifikasi Oleh')
+                    ->hint('Kosongkan jika belum diverifikasi'),
                 
                 Forms\Components\Select::make('member_id')
                     ->label('Pengguna')
@@ -119,6 +120,7 @@ class TransactionResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('Verifikasi')
+                    ->color('success')
                     ->action(fn(Transaction $record) => $record->user_id = auth()->id()),
             ])
             ->bulkActions([
