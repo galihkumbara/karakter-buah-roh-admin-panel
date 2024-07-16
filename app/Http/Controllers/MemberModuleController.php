@@ -16,7 +16,7 @@ class MemberModuleController extends Controller
      */
     public function index(Request $request)
     {
-        $memberId = $request->post('member_id');
+        $memberId = $request->member_id;
         if($memberId) {
             if(Member::find($memberId) == null) {
                 return ResponseHelper::error('Member not found', 404);
