@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('/admin/transactions', TransactionController::class);
 Route::apiResource('/questionnaires', QuestionnaireController::class);
 Route::apiResource('/questionnairemembers', QuestionnaireQuestionMemberController::class);
-Route::apiResource('/membermodules', MemberModuleController::class);
+Route::post('/membermodules', [MemberModuleController::class, 'index']);
 
 Route::apiResource('/contents', ContentController::class);
 
