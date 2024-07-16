@@ -82,7 +82,7 @@ class TransactionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('proof_of_payment_url')
+                Tables\Columns\ImageColumn::make('proof_of_payment_url')
                     ->label('Bukti Bayar'),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Diverifikasi Oleh')
@@ -118,6 +118,8 @@ class TransactionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('Verifikasi')
+                    ->action(fn(Transaction $record) => $record->user_id = auth()->id()),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
