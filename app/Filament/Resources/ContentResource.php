@@ -95,8 +95,7 @@ class ContentResource extends Resource
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('always_show')
-                    ->label('Selalu Tampil')
-                    ->boolean(),
+                    ->label('Selalu Tampil'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
