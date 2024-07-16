@@ -7,7 +7,7 @@ use App\Http\Requests\StoreMemberModuleRequest;
 use App\Http\Requests\UpdateMemberModuleRequest;
 use App\Models\Member;
 use App\Models\MemberModule;
-use Illuminate\Http\Client\Request;
+use Illuminate\Http\Request;
 
 class MemberModuleController extends Controller
 {
