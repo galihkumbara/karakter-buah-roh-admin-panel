@@ -23,10 +23,15 @@ class TransactionController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'proof_of_payment_url' => 'nullable|string|max:255',
                 'user_id' => 'integer|exists:users,id',
                 'member_id' => 'integer|exists:members,id',
+                'proof_of_payment_url' => 'nullable|file|max:2048|mimes:jpeg,png,pdf',
             ]);
+
+            if ($request->hasFile('proof_of_payment_url')) {
+                $validatedData['proof_of_payment_url'] = $request->file('proof_of_payment_url')->store('proof_of_payment');
+            }
+
             
             $transaction = Transaction::create($validatedData);
             
@@ -54,10 +59,14 @@ class TransactionController extends Controller
             $validatedData = $request->validate([
                 'name' => 'sometimes|required|string|max:255',
                 'description' => 'nullable|string',
-                'proof_of_payment_url' => 'nullable|string|max:255',
+                'proof_of_payment_url' => 'nullable|file|max:2048|mimes:jpeg,png,pdf',
                 'user_id' => 'nullable|integer|exists:users,id',
                 'member_id' => 'nullable|integer|exists:members,id',
             ]);
+
+            if ($request->hasFile('proof_of_payment_url')) {
+                $validatedData['proof_of_payment_url'] = $request->file('proof_of_payment_url')->store('proof_of_payment');
+            }
 
             $transaction = Transaction::findOrFail($id);
             $transaction->update($validatedData);

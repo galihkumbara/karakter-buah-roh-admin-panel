@@ -54,7 +54,7 @@ class QuestionnaireQuestionMemberController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'question_id' => 'required|integer|exists:questions,id',
+                'question_id' => 'required|integer|exists:questionnaire_questions,id',
                 'member_id' => 'required|integer|exists:members,id',
                 'answer' => 'required|string',
             ]);
