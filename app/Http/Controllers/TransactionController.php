@@ -78,10 +78,12 @@ class TransactionController extends Controller
             $transaction = Transaction::findOrFail($id);
             $transaction->update($validatedData);
             $transaction->modules()->detach();
-            $module_selected = Module::findOrFail($validatedData['module_id']);
-            $transaction->modules()->attach($validatedData['module_id'],[
-                'price' => $module_selected->price
-            ]);
+            if($request->has('module_id')){
+                $module_selected = Module::findOrFail($validatedData['module_id']);
+                $transaction->modules()->attach($validatedData['module_id'],[
+                    'price' => $module_selected->price
+                ]);
+            }
 
             return ResponseHelper::success($transaction->load('modules'), 'Transaction updated successfully');
         } catch (ModelNotFoundException $e) {
