@@ -24,7 +24,6 @@ class TransactionController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'user_id' => 'integer|exists:users,id',
                 'member_id' => 'integer|exists:members,id',
                 'proof_of_payment_url' => 'nullable|file|max:2048|mimes:jpeg,png,pdf',
                 'module_id'=> 'required|integer|exists:modules,id'
@@ -36,9 +35,12 @@ class TransactionController extends Controller
 
             $selected_module = Module::findOrFail($validatedData['module_id']);
             $transaction = Transaction::create($validatedData);
+            $transaction->user_id = null;
             $transaction->modules()->attach($validatedData['module_id'],[
                 'price' => $selected_module->price
             ]);
+
+            
 
             
             return ResponseHelper::success($transaction->load('modules'), 'Transaction created successfully', 201);
@@ -66,7 +68,6 @@ class TransactionController extends Controller
                 'name' => 'sometimes|required|string|max:255',
                 'description' => 'nullable|string',
                 'proof_of_payment_url' => 'nullable|file|max:2048|mimes:jpeg,png,pdf',
-                'user_id' => 'nullable|integer|exists:users,id',
                 'member_id' => 'nullable|integer|exists:members,id',
                 'module_id'=> 'nullable|integer|exists:modules,id'
             ]);
