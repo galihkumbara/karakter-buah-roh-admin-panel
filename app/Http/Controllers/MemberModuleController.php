@@ -14,7 +14,7 @@ class MemberModuleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function ModuleByMember(Request $request)
     {
         $memberId = $request->member_id;
         if($memberId) {
