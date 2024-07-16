@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use App\Helpers\ResponseHelper;
+use App\Models\Module;
 use Exception;
 
 class TransactionController extends Controller
@@ -33,9 +34,11 @@ class TransactionController extends Controller
                 $validatedData['proof_of_payment_url'] = $request->file('proof_of_payment_url')->store('proof_of_payment');
             }
 
-
+            $selected_module = Module::findOrFail($validatedData['module_id']);
             $transaction = Transaction::create($validatedData);
-            $transaction->modules()->attach($validatedData['module_id']);
+            $transaction->modules()->attach($validatedData['module_id'],[
+                'price' => $selected_module->price
+            ]);
 
             
             return ResponseHelper::success($transaction, 'Transaction created successfully', 201);
@@ -75,7 +78,10 @@ class TransactionController extends Controller
             $transaction = Transaction::findOrFail($id);
             $transaction->update($validatedData);
             $transaction->modules()->detach();
-            $transaction->modules()->attach($validatedData['module_id']);
+            $module_selected = Module::findOrFail($validatedData['module_id']);
+            $transaction->modules()->attach($validatedData['module_id'],[
+                'price' => $module_selected->price
+            ]);
 
             return ResponseHelper::success($transaction, 'Transaction updated successfully');
         } catch (ModelNotFoundException $e) {
