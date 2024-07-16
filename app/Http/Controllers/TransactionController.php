@@ -68,7 +68,7 @@ class TransactionController extends Controller
                 'proof_of_payment_url' => 'nullable|file|max:2048|mimes:jpeg,png,pdf',
                 'user_id' => 'nullable|integer|exists:users,id',
                 'member_id' => 'nullable|integer|exists:members,id',
-                'module_id'=> 'required|integer|exists:modules,id'
+                'module_id'=> 'nullable|integer|exists:modules,id'
             ]);
 
             if ($request->hasFile('proof_of_payment_url')) {
