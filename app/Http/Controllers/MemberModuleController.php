@@ -2,18 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Requests\StoreMemberModuleRequest;
 use App\Http\Requests\UpdateMemberModuleRequest;
+use App\Models\Member;
 use App\Models\MemberModule;
+use Illuminate\Http\Client\Request;
 
 class MemberModuleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $memberId = $request->input('member_id');
+        if($memberId) {
+            if(Member::find($memberId) == null) {
+                return ResponseHelper::error('Member not found', 404);
+            }
+            $memberModules = MemberModule::where('member_id', $memberId)->get();
+        } else {
+            $memberModules = MemberModule::all();
+        }
+
+        //get only Module object from each MemberModule
+        $modules = $memberModules->map(function($memberModule){
+            return $memberModule->module;
+        });
+
+        return ResponseHelper::success($modules);
+
     }
 
     /**
@@ -35,9 +54,9 @@ class MemberModuleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(MemberModule $memberModule)
+    public function show(Request $request)
     {
-        //
+        
     }
 
     /**
