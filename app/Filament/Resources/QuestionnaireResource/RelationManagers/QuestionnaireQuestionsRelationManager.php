@@ -54,6 +54,7 @@ class QuestionnaireQuestionsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('question')
                     ->label('Pertanyaan'),
             ])
+            
             ->filters([
                 //
             ])
