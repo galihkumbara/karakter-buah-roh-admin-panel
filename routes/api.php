@@ -29,6 +29,8 @@ Route::apiResource('/transactions', TransactionController::class);
 Route::apiResource('/questionnaires', QuestionnaireController::class);
 Route::apiResource('/questionnairemembers', QuestionnaireQuestionMemberController::class);
 Route::post('/membermodules', [MemberModuleController::class, 'ModuleByMember']);
+Route::post('/register', [MemberController::class, 'store']);
+
 Route::apiResource('user/module', ModuleController::class);
 Route::apiResource('user/character', CharacterController::class);
 Route::apiResource('user/religion', ReligionController::class);

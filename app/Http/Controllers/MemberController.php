@@ -33,9 +33,38 @@ class MemberController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMemberRequest $request)
+    public function store(Request $request)
     {
-        //
+//         name:Marshall
+// email:movierdo@student.ciputra.ac.id
+// phone:08123456789
+// institute:1
+// city:3578
+// education:1
+// religion:2
+// tribe:1
+// password:wars1234
+// password_confirmation:wars1234
+// year_born:2000
+// address:Jl. Mawar 123
+// role:1
+
+//request will contain above key and value, make member based on that
+        $member = Member::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'institution_id' => $request->institute,
+            'city_id' => $request->city,
+            'education_id' => $request->education,
+            'religion_id' => $request->religion,
+            'ethnic_id' => $request->tribe,
+            'password' => bcrypt($request->password),
+            'birthdate' => $request->year_born . '-01-01',
+            'address' => $request->address,
+        ]);
+
+        return ResponseHelper::success($member);
     }
 
     /**
