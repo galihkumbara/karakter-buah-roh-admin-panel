@@ -121,7 +121,7 @@ class TransactionResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('Verifikasi')
-                    ->color('success')
+                    ->color(fn (Transaction $record) => $record->user_id == null ? 'success' : 'disabled')
                     ->action(function(Transaction $record){
                         $record->user_id = auth()->id();
                         $record->save();
@@ -135,11 +135,17 @@ class TransactionResource extends Resource
                             }
                         }
                     })
+                    ->disabled(function(Transaction $record){
+                        return $record->user_id != null;
+                    })
                     ->requiresConfirmation()
                     ->modalHeading('Verifikasi Transaksi')
                     ->modalDescription('Apakah Anda yakin ingin memverifikasi transaksi ini?')
                     ->modalSubmitActionLabel('Verifikasi')
-                    ->modalCancelActionLabel('Batal'),
+                    ->modalCancelActionLabel('Batal')
+                    ->label(function(Transaction $record){
+                        return $record->user_id == null ? 'Verifikasi' : 'Terverifikasi';
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
