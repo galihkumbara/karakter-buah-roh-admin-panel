@@ -35,8 +35,12 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Member extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
+
+class Member extends Authenticatable
 {
+	use HasApiTokens;
 	protected $table = 'members';
 
 	protected $casts = [
@@ -47,9 +51,7 @@ class Member extends Model
 		'ethnic_id' => 'int'
 	];
 
-	protected $hidden = [
-		'password'
-	];
+
 
 	protected $fillable = [
 		'name',

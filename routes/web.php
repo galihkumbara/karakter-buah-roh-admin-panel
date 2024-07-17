@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\ResponseHelper;
 use App\Models\Member;
 use App\Models\MemberQuiz;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -34,13 +35,13 @@ Route::get('/fixer', function(){
     }
 });
 
-Route::post('/api/generate-token', function (Request $request) {
+Route::post('/api/login', function (Request $request) {
     $request->validate([
         'email' => 'required|email',
         'password' => 'required'
     ]);
     $credentials = $request->only('email', 'password');
-
+    
     // Attempt to authenticate the user
     if (Auth::attempt($credentials)) {
         /** @var \App\Models\User $user **/
@@ -48,6 +49,22 @@ Route::post('/api/generate-token', function (Request $request) {
         // Create the token with a specified name
         $token = $user->createToken('token')->plainTextToken;
         return response()->json(['token' => $token]);
+    }else{
+      if(Auth::guard('members')->attempt($credentials)){
+        $user = Auth::guard('members')->user();
+        $token = $user->createToken('token')->plainTextToken;
+        return ResponseHelper::success(
+            [
+                "token_type" => "Bearer",
+                "expires_in" => 31536000,
+                "access_token" => $token,
+                "refresh_token" => $token,
+                "user_id" => $user->id,
+                "role_id" => 1
+            ]
+        );
+      }
+        
     }
     return response()->json(['error' => 'Unauthorized'], 401);
 })->withoutMiddleware(VerifyCsrfToken::class);
