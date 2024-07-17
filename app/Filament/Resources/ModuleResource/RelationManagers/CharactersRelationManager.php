@@ -70,6 +70,8 @@ class CharactersRelationManager extends RelationManager
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->reorderable('order_number')
+            ->defaultSort('order_number');
     }
 }

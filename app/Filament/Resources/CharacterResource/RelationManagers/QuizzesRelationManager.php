@@ -34,6 +34,8 @@ class QuizzesRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Nama Kuis'),
             ])
+            ->reorderable('order_number')
+            ->defaultSort('order_number')
             ->filters([
                 //
             ])
