@@ -25,7 +25,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('/admin/transactions', TransactionController::class);
+Route::apiResource('/transactions', TransactionController::class);
 Route::apiResource('/questionnaires', QuestionnaireController::class);
 Route::apiResource('/questionnairemembers', QuestionnaireQuestionMemberController::class);
 Route::post('/membermodules', [MemberModuleController::class, 'ModuleByMember']);
