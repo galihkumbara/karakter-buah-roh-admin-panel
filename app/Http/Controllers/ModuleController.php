@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Models\Module;
 use App\Http\Requests\StoreModuleRequest;
 use App\Http\Requests\UpdateModuleRequest;
@@ -13,7 +14,7 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        //
+        return ResponseHelper::success(Module::all()->load('characters'));
     }
 
     /**
@@ -21,15 +22,27 @@ class ModuleController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreModuleRequest $request)
-    {
-        //
+    {   
+        $name = $request->name;
+        $is_active = $request->status;
+        $color = $request->hex_color;
+        $price = 0;
+
+        $module = Module::create([
+            'name' => $name,
+            'is_active' => $is_active,
+            'color' => $color,
+            'price' => $price
+        ]);
+
+        return ResponseHelper::success($module->load('characters'));
     }
 
     /**
@@ -37,7 +50,31 @@ class ModuleController extends Controller
      */
     public function show(Module $module)
     {
-        //
+        if (!$module) {
+            return ResponseHelper::error('Module not found',404);
+        }
+        //change is_active to status
+        $module['status'] = $module['is_active'];
+        unset($module['is_active']);
+        //change order_number to order
+        $module['order'] = $module['order_number'];
+        unset($module['order_number']);
+        //change hex_color to color
+        $module['color_hex'] = $module['color'];
+        unset($module['color']);
+        $module->load('characters');
+        foreach ($module->characters as $character) {
+            $character['verse_number'] = $character['bible_verse'];
+            unset($character['bible_verse']);
+            $character['verse'] = $character['bible_verse_text'];
+            unset($character['bible_verse_text']);
+            $character['order'] = $character['order_number'];
+            unset($character['order_number']);
+            $character['status'] = $character['is_active'];
+            unset($character['is_active']);
+            
+        }
+        return ResponseHelper::success($module);
     }
 
     /**
@@ -53,7 +90,26 @@ class ModuleController extends Controller
      */
     public function update(UpdateModuleRequest $request, Module $module)
     {
-        //
+        $name = $request->name;
+        $is_active = $request->status;
+        $color = $request->hex_color;
+
+        //only update non-null fields
+        if ($name) {
+            $module->name = $name;
+        }
+
+        if ($is_active) {
+            $module->is_active = $is_active;
+        }
+
+        if ($color) {
+            $module->color = $color;
+        }
+
+        $module->save();
+
+        return ResponseHelper::success($module);
     }
 
     /**
@@ -61,6 +117,10 @@ class ModuleController extends Controller
      */
     public function destroy(Module $module)
     {
-        //
+        if (!$module) {
+            return ResponseHelper::error('Module not found',404);
+        }
+        $module->delete();
+        return ResponseHelper::success('Module deleted successfully');
     }
 }

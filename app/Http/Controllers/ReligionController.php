@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Models\Religion;
 use App\Http\Requests\StoreReligionRequest;
 use App\Http\Requests\UpdateReligionRequest;
@@ -13,7 +14,7 @@ class ReligionController extends Controller
      */
     public function index()
     {
-        //
+        return ResponseHelper::success(Religion::all());
     }
 
     /**
@@ -21,7 +22,7 @@ class ReligionController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -29,7 +30,13 @@ class ReligionController extends Controller
      */
     public function store(StoreReligionRequest $request)
     {
-        //
+        $name = $request->name;
+
+        $religion = Religion::create([
+            'name' => $name,
+        ]);
+
+        return ResponseHelper::success($religion);
     }
 
     /**
@@ -37,7 +44,10 @@ class ReligionController extends Controller
      */
     public function show(Religion $religion)
     {
-        //
+        if (!$religion) {
+            return ResponseHelper::error('Religion not found',404);
+        }
+        return ResponseHelper::success($religion);
     }
 
     /**
@@ -53,7 +63,11 @@ class ReligionController extends Controller
      */
     public function update(UpdateReligionRequest $request, Religion $religion)
     {
-        //
+        $religion->update([
+            'name' => $request->name,
+        ]);
+
+        return ResponseHelper::success($religion);
     }
 
     /**
@@ -61,6 +75,7 @@ class ReligionController extends Controller
      */
     public function destroy(Religion $religion)
     {
-        //
+        $religion->delete();
+        return ResponseHelper::success('Religion deleted successfully ');
     }
 }

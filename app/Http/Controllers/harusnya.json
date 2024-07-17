@@ -1,0 +1,151 @@
+{
+    "data": {
+        "code": 200,
+        "status": true,
+        "message": "Sukses",
+        "results": {
+            "id": 1,
+            "name": "John Doe",
+            "photo": "user-1667367795-seg00.png",
+            "email": "user@gmail.com",
+            "year_born": 2000,
+            "phone": "08123123123",
+            "address": "Jl. Mawar 123",
+            "institute": {
+                "id": 1,
+                "name": "Umum",
+                "created_at": "2022-08-25T08:53:34.000000Z",
+                "updated_at": "2022-08-29T03:24:19.000000Z"
+            },
+            "education": {
+                "id": 1,
+                "name": "Tidak Sekolah",
+                "created_at": "2022-08-25T08:53:34.000000Z",
+                "updated_at": "2022-08-25T08:53:34.000000Z"
+            },
+            "religion": {
+                "id": 1,
+                "name": "Islam",
+                "created_at": "2022-08-25T08:53:34.000000Z",
+                "updated_at": "2022-08-25T08:53:34.000000Z"
+            },
+            "tribe": {
+                "id": 1,
+                "name": "Jawa",
+                "created_at": "2022-08-25T08:53:34.000000Z",
+                "updated_at": "2022-08-25T08:53:34.000000Z"
+            },
+            "city": {
+                "id": 1101,
+                "name": "KABUPATEN SIMEULUE"
+            },
+            "modules": [
+                {
+                    "id": 1,
+                    "status": 1,
+                    "module": {
+                        "id": 1,
+                        "name": "Kasih",
+                        "status": 1,
+                        "order": 1,
+                        "price": 0,
+                        "path": null,
+                        "color_hex": "#ffffff",
+                        "created_at": "2022-08-25T08:53:34.000000Z",
+                        "updated_at": "2022-08-28T01:50:56.000000Z"
+                    }
+                },
+                {
+                    "id": 2,
+                    "status": 0,
+                    "module": {
+                        "id": 2,
+                        "name": "Sukacita",
+                        "status": 1,
+                        "order": 2,
+                        "price": 0,
+                        "path": null,
+                        "color_hex": "#FFC700",
+                        "created_at": "2022-08-25T08:53:34.000000Z",
+                        "updated_at": "2022-11-20T08:11:14.000000Z"
+                    }
+                },
+                {
+                    "id": 3,
+                    "status": 1,
+                    "module": {
+                        "id": 4,
+                        "name": "Kesabaran",
+                        "status": 1,
+                        "order": 4,
+                        "price": 0,
+                        "path": null,
+                        "color_hex": "#5DBFCC",
+                        "created_at": "2022-08-25T08:53:34.000000Z",
+                        "updated_at": "2022-10-30T11:26:57.000000Z"
+                    }
+                },
+                {
+                    "id": 5,
+                    "status": 1,
+                    "module": {
+                        "id": 5,
+                        "name": "Kemurahan",
+                        "status": 1,
+                        "order": 5,
+                        "price": 0,
+                        "path": null,
+                        "color_hex": "#CDA18B",
+                        "created_at": "2022-08-25T08:53:34.000000Z",
+                        "updated_at": "2022-11-20T08:21:44.000000Z"
+                    }
+                },
+                {
+                    "id": 6,
+                    "status": 1,
+                    "module": {
+                        "id": 6,
+                        "name": "Kebaikan",
+                        "status": 1,
+                        "order": 6,
+                        "price": 0,
+                        "path": null,
+                        "color_hex": "#E76B7E",
+                        "created_at": "2022-08-25T08:53:34.000000Z",
+                        "updated_at": "2022-11-20T08:14:35.000000Z"
+                    }
+                },
+                {
+                    "id": 7,
+                    "status": 1,
+                    "module": {
+                        "id": 7,
+                        "name": "Kesetiaan",
+                        "status": 1,
+                        "order": 7,
+                        "price": 0,
+                        "path": null,
+                        "color_hex": "#F2935B",
+                        "created_at": "2022-08-25T08:53:34.000000Z",
+                        "updated_at": "2022-11-20T08:12:34.000000Z"
+                    }
+                },
+                {
+                    "id": 14,
+                    "status": 1,
+                    "module": {
+                        "id": 3,
+                        "name": "Damai Sejahtera",
+                        "status": 1,
+                        "order": 3,
+                        "price": 0,
+                        "path": null,
+                        "color_hex": "#2CA33B",
+                        "created_at": "2022-08-25T08:53:34.000000Z",
+                        "updated_at": "2022-11-20T08:11:39.000000Z"
+                    }
+                }
+            ]
+        }
+    }
+}

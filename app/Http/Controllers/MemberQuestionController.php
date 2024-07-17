@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Models\MemberQuestion;
 use App\Http\Requests\StoreMemberQuestionRequest;
 use App\Http\Requests\UpdateMemberQuestionRequest;
+use App\Models\MemberQuiz;
+use App\Models\Question;
+use Illuminate\Http\Request;
 
 class MemberQuestionController extends Controller
 {
@@ -27,11 +31,47 @@ class MemberQuestionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMemberQuestionRequest $request)
+    public function store(Request $request)
     {
-        //
+    //they will send this
+    //user_id:1
+    // quiz_id:2
+    // choice[1]:0
+    // answer[1]:
+    // open_question[1]:
+    // question_id[1]:19
+    // choice[2]:1
+    // answer[2]:
+    // open_question[2]:
+    // question_id[2]:20
+    // choice[3]:1
+    // answer[3]:
+    // open_question[3]:Pertanyaan OQ
+    // question_id[3]:26
+    // choice[4]:
+    // answer[4]:Jawaban Refleksi
+    // open_question[4]:
+    // question_id[4]:27
+    
+    foreach($request->question_id as $key => $question_id){
+        if(Question::find($question_id) == null){
+            return ResponseHelper::error('Question not found (ID = '.$question_id.')',404);
+        }
+        $memberQuestion = MemberQuestion::create([
+            'member_id' => $request->user_id,
+            'question_id' => $question_id,
+            'answer' => $request->choice[$key],
+        ]);
     }
+    MemberQuiz::create([
+        'member_id' => $request->user_id,
+        'quiz_id' => $request->quiz_id,
+        'reflection'=> $request->answer[4],
+        'open_answer'=> $request->open_question[3]
+    ]);
 
+    return ResponseHelper::success($memberQuestion);
+    }
     /**
      * Display the specified resource.
      */

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Models\Education;
 use App\Http\Requests\StoreEducationRequest;
 use App\Http\Requests\UpdateEducationRequest;
@@ -13,7 +14,7 @@ class EducationController extends Controller
      */
     public function index()
     {
-        //
+        return ResponseHelper::success(Education::all());
     }
 
     /**

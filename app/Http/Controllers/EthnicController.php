@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Models\Ethnic;
 use App\Http\Requests\StoreEthnicRequest;
 use App\Http\Requests\UpdateEthnicRequest;
@@ -13,7 +14,7 @@ class EthnicController extends Controller
      */
     public function index()
     {
-        //
+        return ResponseHelper::success(Ethnic::all());
     }
 
     /**

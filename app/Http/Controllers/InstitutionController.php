@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Models\Institution;
 use App\Http\Requests\StoreInstitutionRequest;
 use App\Http\Requests\UpdateInstitutionRequest;
@@ -13,7 +14,7 @@ class InstitutionController extends Controller
      */
     public function index()
     {
-        //
+        return ResponseHelper::success(Institution::all());
     }
 
     /**

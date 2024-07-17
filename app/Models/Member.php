@@ -61,8 +61,15 @@ class Member extends Model
 		'institution_id',
 		'education_id',
 		'religion_id',
-		'ethnic_id'
+		'ethnic_id',
 	];
+
+
+
+	public function institute()
+	{
+		return $this->belongsTo(Institution::class);
+	}
 
 	public function education()
 	{
@@ -77,6 +84,11 @@ class Member extends Model
 	}
 
 	public function ethnic()
+	{
+		return $this->belongsTo(Ethnic::class);
+	}
+
+	public function tribe()
 	{
 		return $this->belongsTo(Ethnic::class);
 	}

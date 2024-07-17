@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Models\Quiz;
 use App\Http\Requests\StoreQuizRequest;
 use App\Http\Requests\UpdateQuizRequest;
@@ -13,7 +14,20 @@ class QuizController extends Controller
      */
     public function index()
     {
-        //
+        $quiz = Quiz::all()
+                    ->load('questions');
+        
+        foreach ($quiz as $q) {
+            foreach ($q->questions as $question) {
+                $question['order'] = $question['order_number'];
+                unset($question['order_number']);
+                $question['path'] = null;
+            }
+        }
+
+
+        
+        return ResponseHelper::success($quiz);
     }
 
     /**
@@ -21,7 +35,7 @@ class QuizController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -29,7 +43,25 @@ class QuizController extends Controller
      */
     public function store(StoreQuizRequest $request)
     {
-        //
+        $name = $request->name;
+        $is_active = $request->status;
+        $character_id = $request->character_id;
+
+        $quiz = Quiz::create([
+            'name' => $name,
+            'is_active' => $is_active,
+            'character_id' => $character_id
+        ]);
+
+        $quiz->load('questions');
+
+        foreach ($quiz->questions as $question) {
+            $question['order'] = $question['order_number'];
+            unset($question['order_number']);
+            $question['path'] = null;
+        }
+
+        return ResponseHelper::success($quiz);
     }
 
     /**
@@ -37,7 +69,17 @@ class QuizController extends Controller
      */
     public function show(Quiz $quiz)
     {
-        //
+        if (!$quiz) {
+            return ResponseHelper::error('Quiz not found',404);
+        }
+        $quiz->load('questions');
+
+        foreach ($quiz->questions as $question) {
+            $question['order'] = $question['order_number'];
+            unset($question['order_number']);
+            $question['path'] = null;
+        }
+        return ResponseHelper::success($quiz);
     }
 
     /**
@@ -45,7 +87,7 @@ class QuizController extends Controller
      */
     public function edit(Quiz $quiz)
     {
-        //
+        
     }
 
     /**
@@ -53,7 +95,25 @@ class QuizController extends Controller
      */
     public function update(UpdateQuizRequest $request, Quiz $quiz)
     {
-        //
+        $name = $request->name;
+        $is_active = $request->status;
+        $character_id = $request->character_id;
+
+        $quiz->update([
+            'name' => $name,
+            'is_active' => $is_active,
+            'character_id' => $character_id
+        ]);
+
+        $quiz->load('questions');
+
+        foreach ($quiz->questions as $question) {
+            $question['order'] = $question['order_number'];
+            unset($question['order_number']);
+            $question['path'] = null;
+        }
+
+        return ResponseHelper::success($quiz);
     }
 
     /**
@@ -61,6 +121,7 @@ class QuizController extends Controller
      */
     public function destroy(Quiz $quiz)
     {
-        //
+        $quiz->delete();
+        return ResponseHelper::success('Quiz deleted successfully');
     }
 }

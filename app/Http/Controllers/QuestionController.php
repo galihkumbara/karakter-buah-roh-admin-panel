@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Models\Question;
 use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
@@ -13,7 +14,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+        return ResponseHelper::success(Question::all());
     }
 
     /**
@@ -29,7 +30,12 @@ class QuestionController extends Controller
      */
     public function store(StoreQuestionRequest $request)
     {
-        //
+        $question = Question::create([
+            'question' => $request->question,
+            'quiz_id' => $request->quiz_id
+        ]);
+
+        return ResponseHelper::success($question);
     }
 
     /**
@@ -37,7 +43,10 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        //
+        if (!$question) {
+            return ResponseHelper::error('Question not found',404);
+        }
+        return ResponseHelper::success($question);
     }
 
     /**
@@ -53,7 +62,12 @@ class QuestionController extends Controller
      */
     public function update(UpdateQuestionRequest $request, Question $question)
     {
-        //
+        $question->update([
+            'question' => $request->question,
+            'quiz_id' => $request->quiz_id
+        ]);
+
+        return ResponseHelper::success($question);
     }
 
     /**
@@ -61,6 +75,7 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        $question->delete();
+        return ResponseHelper::success('Question deleted successfully');
     }
 }
