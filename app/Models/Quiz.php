@@ -9,6 +9,8 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 
 /**
  * Class Quiz
@@ -26,9 +28,16 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Quiz extends Model
+class Quiz extends Model implements Sortable
 {
+	use SortableTrait;
 	protected $table = 'quizzes';
+
+	public $sortable = [
+        'order_column_name' => 'order_number',
+        'sort_when_creating' => true,
+    ];
+
 
 	protected $casts = [
 		'is_active' => 'bool',
