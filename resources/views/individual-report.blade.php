@@ -29,9 +29,17 @@
                     //if 6-7 quiz is done, then commitment is Baik
                     //if 3-5 quiz is done, then commitment is Cukup
                     //if 0-2 quiz is done, then commitment is Kurang
-                    $this_quiz = $ch
+                    $this_quiz = $member->quizzes->pluck('quiz_id')->intersect($character->quizzes->pluck('id'))->count();
+                    if($this_quiz >= 6){
+                        $commitment = "Baik";
+                    }elseif($this_quiz >= 3){
+                        $commitment = "Cukup";
+                    }else{
+                        $commitment = "Kurang";
+                    }
+
                     @endphp
-                    <p class="text-lg "><span class="font-semibold">Komitmen: </span> </p>
+                    <p class="text-lg "><span class="font-semibold">Komitmen: {{$commitment}} </span> </p>
                     <table>
                         <thead>
                             <tr>
