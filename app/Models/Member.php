@@ -100,6 +100,12 @@ class Member extends Authenticatable
 		return $this->belongsTo(Institution::class);
 	}
 
+	public function finished_character()
+	{
+		$finishedCharacter = Character::whereIn('id', Quiz::whereIn('id',$this->quizzes()->pluck('quiz_id'))->pluck('character_id')->toArray())->get();
+		return $finishedCharacter;
+	}
+
 	public function religion()
 	{
 		return $this->belongsTo(Religion::class);
