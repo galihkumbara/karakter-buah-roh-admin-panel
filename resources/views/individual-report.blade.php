@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BRIEF SUMMARY DIARY OF CHARACTER</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
     <div class="container mx-auto p-8">
@@ -26,20 +26,29 @@
                     <p class="text-lg "><span class="font-semibold">Karakter:</span> {{$character->name}}</p>
                     @php
                     $commitment = "";
-                    //if 6-7 quiz is done, then commitment is Baik
-                    //if 3-5 quiz is done, then commitment is Cukup
-                    //if 0-2 quiz is done, then commitment is Kurang
-                    $this_quiz = $member->quizzes->pluck('quiz_id')->intersect($character->quizzes->pluck('id'))->count();
+                    // Determine commitment based on the number of quizzes done
+                    $this_quiz = $member->quizzes->where('character_id', $character->id)->count();
                     if($this_quiz >= 6){
                         $commitment = "Baik";
-                    }elseif($this_quiz >= 3){
+                    } elseif($this_quiz >= 3){
                         $commitment = "Cukup";
-                    }else{
+                    } else {
                         $commitment = "Kurang";
                     }
-
                     @endphp
                     <p class="text-lg "><span class="font-semibold">Komitmen: {{$commitment}} </span> </p>
+                    @php
+                        $correctAnswerList = [];
+                    @endphp
+                    @foreach ($character->quizzes->take(7) as $quiz)
+                        @php
+                            $memberAnswer = $member->member_questions->whereIn('question_id', $quiz->questions->pluck('id'));
+                            $correctAnswer = $memberAnswer->where('answer', 1)->count();
+                            $correctAnswerList[] = $correctAnswer;
+                        @endphp
+                    @endforeach
+                    <canvas id="lineChart-{{$character->id}}" width="400" height="200"></canvas>
+         
                     <table>
                         <thead>
                             <tr>
@@ -53,6 +62,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr>
                             @foreach ($character->quizzes->take(7) as $quiz)
                                 @if($member->quizzes->pluck('quiz_id')->contains($quiz->id))
                                     <td class="h-6" bgcolor="green"></td>
@@ -60,10 +70,44 @@
                                     <td class="h-6" bgcolor="gray"></td>
                                 @endif
                             @endforeach
+                            </tr>
                         </tbody>
                     </table>
 
-
+                    <script>
+                        var ctx = document.getElementById('lineChart-{{$character->id}}').getContext('2d');
+                        var lineChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: ['Hari 1', 'Hari 2', 'Hari 3', 'Hari 4', 'Hari 5', 'Hari 6', 'Hari 7'],
+                                datasets: [{
+                                    label: 'Values',
+                                    data: @json($correctAnswerList),
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    borderWidth: 2,
+                                    fill: false
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    x: {
+                                        beginAtZero: true,
+                                        title: {
+                                            display: true,
+                                            text: 'Hari'
+                                        }
+                                    },
+                                    y: {
+                                        beginAtZero: true,
+                                        title: {
+                                            display: true,
+                                            text: 'Value'
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    </script>
                 @endforeach
             @endforeach
         </div>
