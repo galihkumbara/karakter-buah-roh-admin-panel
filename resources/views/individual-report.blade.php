@@ -9,6 +9,10 @@
 </head>
 <body class="bg-gray-100 text-gray-800">
     <div class="container mx-auto p-8">
+        {{-- download pdf make as print --}}
+        <div class="text-right mb-4">
+            <a href="javascript:window.print()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download PDF</a>
+        </div>
         <div class="bg-white shadow-md rounded-lg p-6">
             <div class="text-center mb-6">
                 <h1 class="text-3xl font-bold text-blue-600">BRIEF SUMMARY DIARY OF CHARACTER</h1>
