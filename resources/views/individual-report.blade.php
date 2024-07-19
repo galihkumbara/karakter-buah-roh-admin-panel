@@ -22,7 +22,7 @@
             @foreach ($member->modules as $module)
                 <p class="text-lg "><span class="font-semibold">Modul:</span> {{$module->name}}</p> 
             
-                @foreach ($member->finished_character() as $character)
+                @foreach ($member->finished_character()->where('module_id', $module->id) as $character)
                     <p class="text-lg "><span class="font-semibold">Karakter:</span> {{$character->name}}</p>
                     @php
                     $commitment = "";
