@@ -24,32 +24,28 @@ use App\Models\QuestionnaireQuestionMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-//route group auth:sanctum
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-    Route::post('/logout', function (Request $request) {
-        $request->user()->currentAccessToken()->delete();
-        return response()->json(['message' => 'Token Revoked']);
-    });
-    Route::post('/user/{id}/module/add', [MemberController::class, 'addModuleToMember']);
-    Route::apiResource('user/module', ModuleController::class);
-    Route::apiResource('user/character', CharacterController::class);
-    Route::apiResource('user/religion', ReligionController::class);
-    Route::apiResource('user/tribe', EthnicController::class);
-    Route::apiResource('user/institute', InstitutionController::class);
-    Route::apiResource('user/quiz', QuizController::class);
-    Route::apiResource('user/userquestion', MemberQuestionController::class);
-    Route::apiResource('user/education', EducationController::class);
-    Route::get('user/{id}', [MemberController::class, 'show']);
-    Route::patch('user/{id}', [MemberController::class, 'update']);
-    Route::apiResource('location/province', ProvinceController::class);
-    Route::apiResource('location/village', VillageController::class);
-    Route::apiResource('location/city', RegencyController::class);
-    Route::apiResource('location/district', DistrictController::class);
-    Route::apiResource('/contents', ContentController::class);
-});
+//route group auth:sanct
+Route::apiResource('/transactions', TransactionController::class);
+Route::apiResource('/questionnaires', QuestionnaireController::class);
+Route::apiResource('/questionnairemembers', QuestionnaireQuestionMemberController::class);
+Route::post('/membermodules', [MemberModuleController::class, 'ModuleByMember']);
+Route::post('/register', [MemberController::class, 'store']);
+Route::apiResource('user/module', ModuleController::class);
+Route::apiResource('user/character', CharacterController::class);
+Route::apiResource('user/religion', ReligionController::class);
+Route::apiResource('user/tribe', EthnicController::class);
+Route::apiResource('user/institute', InstitutionController::class);
+Route::apiResource('user/quiz', QuizController::class);
+Route::apiResource('user/userquestion', MemberQuestionController::class);
+Route::apiResource('user/education', EducationController::class);
+Route::get('user/{id}', [MemberController::class, 'show']);
+Route::patch('user/{id}', [MemberController::class, 'update']);
+Route::post('user/{id}/module/add', [MemberController::class, 'addModuleToMember']);
+Route::apiResource('location/province', ProvinceController::class);
+Route::apiResource('location/village', VillageController::class);
+Route::apiResource('location/city', RegencyController::class);
+Route::apiResource('location/district', DistrictController::class);
+Route::apiResource('/contents', ContentController::class);
 
 
 
