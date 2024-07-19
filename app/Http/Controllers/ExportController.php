@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 
 class ExportController extends Controller
 {
+    public static function individualReport($member){
+        return redirect()->route('individual-report', compact('member'));
+    }
     public static function exportModulesData($members){
         $csvConvert = [
             "Nama Lengkap", "Email", "Tahun lahir", "Agama", "Suku", "Telp", "Alamat", "Kota", 

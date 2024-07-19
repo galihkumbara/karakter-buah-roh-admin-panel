@@ -35,6 +35,13 @@ Route::get('/fixer', function(){
     }
 });
 
+Route::get('/individual-report/{member}', function(){
+    return view('individual-report')->with('member', Member::find(request()->route('member')));
+})->name('individual-report');
+
+
+
+
 Route::post('/api/login', function (Request $request) {
     $request->validate([
         'email' => 'required|email',

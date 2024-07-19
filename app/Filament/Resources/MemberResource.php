@@ -114,6 +114,10 @@ class MemberResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make("Export")
+                ->action(function(Member $record) {
+                    return ExportController::individualReport($record);
+                })
                 
             ])
             ->bulkActions([
