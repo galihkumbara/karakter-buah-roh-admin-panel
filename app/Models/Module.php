@@ -50,8 +50,20 @@ class Module extends Model implements Sortable
 		'is_active',
 		'color',
 		'order_number',
-		'price'
+		'price',
+		'path'
 	];
+
+	protected $appends = ['path'];
+
+	//get path that always null but it should be in the response
+
+
+
+	public function getPathAttribute()
+	{
+		return null;
+	}
 
 	public function characters()
 	{
