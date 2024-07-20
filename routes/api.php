@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\DistrictController;
@@ -46,6 +47,15 @@ Route::apiResource('location/village', VillageController::class);
 Route::apiResource('location/city', RegencyController::class);
 Route::apiResource('location/district', DistrictController::class);
 Route::apiResource('/contents', ContentController::class);
+
+Route::get('env', function(){
+    return ResponseHelper::success([
+        "status" => "dev",
+        "id" => 1,
+        "created_at" => "2021-08-02T07:00:00.000000Z",
+        "updated_at" => "2021-08-02T07:00:00.000000Z"
+    ]);
+});
 
 
 
