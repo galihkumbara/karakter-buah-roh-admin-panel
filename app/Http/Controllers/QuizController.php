@@ -12,6 +12,22 @@ class QuizController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public static function formatQuiz($quiz) {
+        $quiz->load('members');
+        $quiz['status'] = $quiz['is_active'] ? 1 : 0;
+        unset($quiz['is_active']);
+        $quiz['order'] = $quiz['order_number'];
+        unset($quiz['order_number']);
+        $quiz['complete'] = 0;
+        $quiz['completed_at'] = Date('Y-m-d H:i:s');
+
+        foreach ($quiz->members as $member) {
+            MemberQuizController::formatMemberQuiz($member);
+        }
+
+
+    }
     public function index()
     {
         $quiz = Quiz::all()

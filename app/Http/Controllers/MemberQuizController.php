@@ -8,6 +8,14 @@ use App\Models\MemberQuiz;
 
 class MemberQuizController extends Controller
 {
+
+    public static function formatMemberQuiz($memberQuiz) {
+        $memberQuiz['status'] = 1;
+        $memberQuiz['user_id'] = $memberQuiz['member_id'];
+        unset($memberQuiz['member_id']);
+        unset($memberQuiz['reflection']);
+        unset($memberQuiz['open_answer']);
+    }
     /**
      * Display a listing of the resource.
      */

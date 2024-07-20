@@ -13,9 +13,34 @@ class CharacterController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public static function formatCharacter($character) {
+        $character['verse_number'] = $character['bible_verse'];
+        unset($character['bible_verse']);
+        $character['verse'] = $character['bible_verse_text'];
+        unset($character['bible_verse_text']);
+        $character['order'] = $character['order_number'];
+        unset($character['order_number']);
+        $character['status'] = $character['is_active'] ? 1 : 0;
+        unset($character['is_active']);
+        $character['quizzes_count'] = $character->quizzes->count();
+        $character['qu_count'] = $character->quizzes->count();
+        $character['complete'] = 0;
+        $character->load('quizzes');
+
+        foreach ($character->quizzes as $quiz) {
+            QuizController::formatQuiz($quiz);
+        }
+    }
+
     public function index()
     {
-        return ResponseHelper::success(Character::all());
+        $characters = Character::all();
+        $characters->map(function ($character) {
+            self::formatCharacter($character);
+            return $character;
+        });
+
+        return ResponseHelper::success($characters);
     }
 
     /**

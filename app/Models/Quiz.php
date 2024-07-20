@@ -39,6 +39,7 @@ class Quiz extends Model implements Sortable
     ];
 
 
+
 	protected $casts = [
 		'is_active' => 'bool',
 		'order_number' => 'int',
@@ -52,6 +53,13 @@ class Quiz extends Model implements Sortable
 		'module_id'
 	];
 
+	protected $appends = ['path'];
+
+	public function getPathAttribute()
+	{
+		return null;
+	}
+
 	public function character()
 	{
 		return $this->belongsTo(Character::class);
@@ -60,5 +68,10 @@ class Quiz extends Model implements Sortable
 	public function questions()
 	{
 		return $this->hasMany(Question::class);
+	}
+
+	public function members()
+	{
+		return $this->hasMany(MemberQuiz::class);
 	}
 }

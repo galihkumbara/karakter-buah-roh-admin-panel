@@ -52,6 +52,11 @@ class Character extends Model implements  Sortable
 		'module_id'
 	];
 
+	protected $appends = ['path'];
+	public function getPathAttribute()
+	{
+		return null;
+	}
 	public function module()
 	{
 		return $this->belongsTo(Module::class);
