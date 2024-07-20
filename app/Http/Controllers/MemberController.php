@@ -70,14 +70,16 @@ class MemberController extends Controller
     /**
      * Display the specified resource.
      */ 
-    public function show(int $member)
+    public function show($member)
     {
+
                
         $member = Member::find($member)
                     ->load('education')
                     ->load('religion')
                     ->load('member_modules')
-                    ->load('institution');
+                    ->load('institution')
+                    ->load('city');
             
 
         //change 'profile_picture_url' key to 'photo'
@@ -116,6 +118,7 @@ class MemberController extends Controller
             unset($module['module_id']);
             return $module;
         });
+        unset($member['city']['province_id']);
 
         
         return ResponseHelper::success($member);
@@ -210,6 +213,8 @@ class MemberController extends Controller
         //change ethnic key to tribe
         $member['tribe'] = $member['ethnic'];
         unset($member['ethnic']);
+
+        
 
         //change module/is_active key to module/status
         $member['modules'] = $member['modules']->map(function($module){

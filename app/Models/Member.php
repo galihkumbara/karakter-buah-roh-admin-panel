@@ -100,6 +100,12 @@ class Member extends Authenticatable
 		return $this->belongsTo(Ethnic::class);
 	}
 
+	public function city()
+	{
+		//without province_id variable
+		return $this->belongsTo(Regency::class);
+	}
+
 	public function institution()
 	{
 		return $this->belongsTo(Institution::class);

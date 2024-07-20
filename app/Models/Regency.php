@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $id
  * @property string $province_id
  * @property string $name
+ * 
+ * @property District $district
  *
  * @package App\Models
  */
@@ -28,4 +30,9 @@ class Regency extends Model
 		'province_id',
 		'name'
 	];
+
+	public function district()
+	{
+		return $this->hasOne(District::class, 'regency_id', 'id');
+	}
 }
