@@ -89,7 +89,7 @@ class MemberController extends Controller
         $member['year_born'] = $member['birthdate']->format('Y');
         unset($member['birthdate']);
 
-        $member['phone'] = null;
+        $member['phone'] = "0000";
 
         //change 'institution' key to 'institute'
         $member['institute'] = $member['institution'];
@@ -201,7 +201,7 @@ class MemberController extends Controller
         $member['year_born'] = $member['birthdate']->format('Y');
         unset($member['birthdate']);
 
-        $member['phone'] = null;
+        $member['phone'] = "213123123";
 
         //change 'institution' key to 'institute'
         $member['institute'] = $member['institution'];
