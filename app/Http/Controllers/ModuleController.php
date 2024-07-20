@@ -16,7 +16,7 @@ class ModuleController extends Controller
     {
         $module = Module::all()
         ->map(function ($module) {
-            $module['status'] = $module['is_active'];
+            $module['status'] = $module['is_active'] ? 1 : 0;
             unset($module['is_active']);
             $module['order'] = $module['order_number'];
             unset($module['order_number']);
@@ -24,7 +24,7 @@ class ModuleController extends Controller
             unset($module['color']);
             return $module;
         });
-        return ResponseHelper::success($module);
+        return $module;
     }
 
     /**
