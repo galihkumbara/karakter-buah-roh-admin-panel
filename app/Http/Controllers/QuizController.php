@@ -46,6 +46,21 @@ class QuizController extends Controller
         return ResponseHelper::success($quiz);
     }
 
+    public function results($quiz){
+        $quiz = Quiz::find($quiz);
+        $quiz["answers"] = [];
+        $quiz["status"] = $quiz["is_active"] ? 1 : 0;
+        unset($quiz["is_active"]);
+        $quiz["order"] = $quiz["order_number"];
+        unset($quiz["order_number"]);
+        unset($quiz["character_id"]);
+        unset($quiz["created_at"]);
+        unset($quiz["updated_at"]);
+
+      
+        return ResponseHelper::success($quiz);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
