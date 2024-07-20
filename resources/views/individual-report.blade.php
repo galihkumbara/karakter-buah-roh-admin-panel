@@ -6,14 +6,14 @@
     <title>BRIEF SUMMARY DIARY OF CHARACTER</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
     <div class="container mx-auto p-8">
-        {{-- download pdf make as print --}}
         <div class="text-right mb-4">
-            <a href="javascript:window.print()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download PDF</a>
+            <button id="downloadPdf" class="bg-blue-500 text-white px-4 py-2 rounded">Download PDF</button>
         </div>
-        <div class="bg-white shadow-md rounded-lg p-6">
+        <div id="mainExport" class="bg-white shadow-md rounded-lg p-6">
             <div class="text-center mb-6">
                 <h1 class="text-3xl font-bold text-blue-600">BRIEF SUMMARY DIARY OF CHARACTER</h1>
             </div>
@@ -30,7 +30,6 @@
                     <p class="text-lg "><span class="font-semibold">Karakter:</span> {{$character->name}}</p>
                     @php
                     $commitment = "";
-                    // Determine commitment based on the number of quizzes done
                     $this_quiz = $member->quizzes->where('character_id', $character->id)->count();
                     if($this_quiz >= 6){
                         $commitment = "Baik";
@@ -116,5 +115,17 @@
             @endforeach
         </div>
     </div>
+    <script>
+        document.getElementById('downloadPdf').addEventListener('click', function () {
+            var element = document.getElementById('mainExport');
+            html2pdf(element, {
+                margin: 1,
+                filename: 'Brief_Summary_Diary_of_Character.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            });
+        });
+    </script>
 </body>
 </html>

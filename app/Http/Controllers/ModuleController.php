@@ -14,7 +14,7 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        return ResponseHelper::success(Module::all()->load('characters'));
+        return ResponseHelper::success(Module::all());
     }
 
     /**
