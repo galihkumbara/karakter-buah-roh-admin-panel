@@ -112,6 +112,8 @@ class MemberController extends Controller
             unset($module['module']['is_active']);
             unset($module['created_at']);
             unset($module['updated_at']); 
+            unset($module['member_id']);
+            unset($module['module_id']);
             return $module;
         });
 
