@@ -47,7 +47,7 @@ Route::apiResource('location/village', VillageController::class);
 Route::apiResource('location/city', RegencyController::class);
 Route::apiResource('location/district', DistrictController::class);
 Route::apiResource('/contents', ContentController::class);
-Route::get('user/quiz/{id}/results', [QuizController::class, 'results']);
+Route::get('user/quiz/{id}/results/{member}', [QuizController::class, 'results']);
 
 Route::get('env', function(){
     return ResponseHelper::success([

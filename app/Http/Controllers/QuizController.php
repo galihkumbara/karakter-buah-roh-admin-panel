@@ -6,6 +6,7 @@ use App\Helpers\ResponseHelper;
 use App\Models\Quiz;
 use App\Http\Requests\StoreQuizRequest;
 use App\Http\Requests\UpdateQuizRequest;
+use App\Models\MemberQuestion;
 
 class QuizController extends Controller
 {
@@ -46,9 +47,8 @@ class QuizController extends Controller
         return ResponseHelper::success($quiz);
     }
 
-    public function results($quiz){
+    public function results($quiz, $member){
         $quiz = Quiz::find($quiz);
-        $quiz["answers"] = [];
         $quiz["status"] = $quiz["is_active"] ? 1 : 0;
         unset($quiz["is_active"]);
         $quiz["order"] = $quiz["order_number"];
@@ -56,6 +56,23 @@ class QuizController extends Controller
         unset($quiz["character_id"]);
         unset($quiz["created_at"]);
         unset($quiz["updated_at"]);
+
+        $this_quiz_questions = $quiz->questions->pluck('id');
+        $member_questions = MemberQuestion::where('member_id', $member)->whereIn('question_id', $this_quiz_questions)->get();
+        $quiz["answers"] = $member_questions->map(function($question) use ($quiz){
+            return [
+                "id" => $question->id,
+                "choice" => $question->answer,
+                "answer" => $quiz->open_question,
+                "status" => 1,
+                "user_id" => $question->member_id,
+                "question_id" => $question->question_id,
+                "quiz_id" => $quiz->id,
+                "created_at" => $question->created_at,
+                "updated_at" => $question->updated_at
+
+            ];
+        });
 
       
         return ResponseHelper::success($quiz);
