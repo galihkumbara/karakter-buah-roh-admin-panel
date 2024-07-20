@@ -85,6 +85,11 @@ class Member extends Authenticatable
 					->withTimestamps();
 	}
 
+	public function member_modules()
+	{
+		return $this->hasMany(MemberModule::class);
+	}
+
 	public function ethnic()
 	{
 		return $this->belongsTo(Ethnic::class);

@@ -76,7 +76,7 @@ class MemberController extends Controller
         $member = Member::find($member)
                     ->load('education')
                     ->load('religion')
-                    ->load('modules')
+                    ->load('member_modules')
                     ->load('institution');
             
 
@@ -100,13 +100,16 @@ class MemberController extends Controller
         unset($member['ethnic']);
 
         //change module/is_active key to module/status
-        $member['modules'] = $member['modules']->map(function($module){
-            $module['status'] = $module['pivot']['is_active'];
-            $module['color_hex'] = $module['color'];
-            $module['order'] = $module['order_number'];
-            unset($module['order_number']);
-            unset($module['color']);
+        $member['modules'] = $member['member_modules']->map(function($module){
+            $module['status'] = $module['is_active'] ? 1 : 0;
+            $module->load('module');
+            $module['module']['color_hex'] = $module['module']['color'];
+            $module['module']['order'] = $module['module']['order_number'];
+            $module['module']['status'] = $module['module']['is_active'] ? 1 : 0;
+            unset($module['module']['order_number']);
+            unset($module['module']['color']);
             unset($module['is_active']);
+            unset($module['module']['is_active']);
             return $module;
         });
 
