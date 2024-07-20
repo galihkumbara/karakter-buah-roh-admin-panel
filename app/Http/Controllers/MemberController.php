@@ -110,8 +110,8 @@ class MemberController extends Controller
             unset($module['module']['color']);
             unset($module['is_active']);
             unset($module['module']['is_active']);
-            unset($module['module']['created_at']);
-            unset($module['module']['updated_at']); 
+            unset($module['created_at']);
+            unset($module['updated_at']); 
             return $module;
         });
 
