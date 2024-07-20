@@ -39,6 +39,15 @@ class QuizController extends Controller
                 $question['order'] = $question['order_number'];
                 unset($question['order_number']);
                 $question['path'] = null;
+                unset($question['created_at']);
+                unset($question['updated_at']);
+                $question['questiontype_id'] = 1;
+                $question['questiontyoe'] = [
+                    "id" => 1,
+                    "name" => "Berhasil/Gagal",
+                    "created_at" => "2021-07-07T07:00:00.000000Z",
+                    "updated_at" => "2021-07-07T07:00:00.000000Z"
+                ];
             }
         }
 
@@ -126,6 +135,17 @@ class QuizController extends Controller
             $question['order'] = $question['order_number'];
             unset($question['order_number']);
             $question['path'] = null;
+
+            $question['questiontype_id'] = 1;
+
+            $question['questiontype'] = [
+                "id" => 1,
+                "name" => "Berhasil/Gagal",
+                "created_at" => "2021-07-07T07:00:00.000000Z",
+                "updated_at" => "2021-07-07T07:00:00.000000Z"
+            ];
+
+            
         }
         return ResponseHelper::success($quiz);
     }
