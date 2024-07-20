@@ -14,7 +14,17 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        return ResponseHelper::success(Module::all());
+        $module = Module::all()
+        ->map(function ($module) {
+            $module['status'] = $module['is_active'];
+            unset($module['is_active']);
+            $module['order'] = $module['order_number'];
+            unset($module['order_number']);
+            $module['color_hex'] = $module['color'];
+            unset($module['color']);
+            return $module;
+        });
+        return ResponseHelper::success($module);
     }
 
     /**
