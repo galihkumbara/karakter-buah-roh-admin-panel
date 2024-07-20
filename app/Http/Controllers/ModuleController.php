@@ -64,7 +64,7 @@ class ModuleController extends Controller
             return ResponseHelper::error('Module not found',404);
         }
         //change is_active to status
-        $module['status'] = $module['is_active'];
+        $module['status'] = $module['is_active'] ? 1 : 0;
         unset($module['is_active']);
         //change order_number to order
         $module['order'] = $module['order_number'];
@@ -73,6 +73,9 @@ class ModuleController extends Controller
         $module['color_hex'] = $module['color'];
         unset($module['color']);
         $module->load('characters');
+        unset($module['created_at']);
+        unset($module['updated_at']);
+        
         foreach ($module->characters as $character) {
             $character['verse_number'] = $character['bible_verse'];
             unset($character['bible_verse']);
@@ -80,7 +83,7 @@ class ModuleController extends Controller
             unset($character['bible_verse_text']);
             $character['order'] = $character['order_number'];
             unset($character['order_number']);
-            $character['status'] = $character['is_active'];
+            $character['status'] = $character['is_active'] ? 1 : 0;
             unset($character['is_active']);
             
         }
