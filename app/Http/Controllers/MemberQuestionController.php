@@ -60,7 +60,7 @@ class MemberQuestionController extends Controller
         $member_quiz = MemberQuiz::create([
             'member_id' => $request->user_id,
             'quiz_id' => $request->quiz_id,
-            'reflection'=> $request->answer[4],
+            'reflection'=> $request->answer[6],
             'open_answer'=> $request->open_question[3]
         ]);
         $memberQuestion = MemberQuestion::create([
