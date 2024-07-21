@@ -33,6 +33,8 @@ Route::post('/membermodules', [MemberModuleController::class, 'ModuleByMember'])
 Route::post('/register', [MemberController::class, 'store']);
 Route::apiResource('user/module', ModuleController::class);
 Route::apiResource('user/character', CharacterController::class);
+Route::get('user/character/{user_id}/result', [CharacterController::class, 'result']);
+
 Route::apiResource('user/religion', ReligionController::class);
 Route::apiResource('user/tribe', EthnicController::class);
 Route::apiResource('user/institute', InstitutionController::class);

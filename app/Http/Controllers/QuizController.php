@@ -67,6 +67,7 @@ class QuizController extends Controller
         unset($quiz["updated_at"]);
 
         $this_quiz_questions = $quiz->questions->pluck('id');
+        return $this_quiz_questions;
         $member_questions = MemberQuestion::where('member_id', $member)->whereIn('question_id', $this_quiz_questions)->get();
         $quiz["answers"] = $member_questions->map(function($question) use ($quiz){
             return [
@@ -145,7 +146,7 @@ class QuizController extends Controller
                 "updated_at" => "2021-07-07T07:00:00.000000Z"
             ];
 
-            
+
         }
         return ResponseHelper::success($quiz);
     }

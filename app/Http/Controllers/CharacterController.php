@@ -6,6 +6,7 @@ use App\Helpers\ResponseHelper;
 use App\Models\Character;
 use App\Http\Requests\StoreCharacterRequest;
 use App\Http\Requests\UpdateCharacterRequest;
+use App\Models\MemberQuiz;
 use Illuminate\Http\Request;
 
 class CharacterController extends Controller
@@ -13,7 +14,7 @@ class CharacterController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public static function formatCharacter($character) {
+    public static function formatCharacter($character, $user_id) {
         $character['verse_number'] = $character['bible_verse'];
         unset($character['bible_verse']);
         $character['verse'] = $character['bible_verse_text'];
@@ -23,7 +24,7 @@ class CharacterController extends Controller
         $character['status'] = $character['is_active'] ? 1 : 0;
         unset($character['is_active']);
         $character['quizzes_count'] = $character->quizzes->count();
-        $character['qu_count'] = $character->quizzes->count();
+        $character['qu_count'] = $character->quizzes->whereIn('id',MemberQuiz::where('member_id', $user_id)->pluck('quiz_id'))->count();
         $character['complete'] = 0;
         $character->load('quizzes');
 
@@ -35,13 +36,25 @@ class CharacterController extends Controller
     public function index()
     {
         $characters = Character::all();
-        $characters->map(function ($character) {
-            self::formatCharacter($character);
+        // $characters->map(function ($character) {
+        //     self::formatCharacter($character);
+        //     return $character;
+        // });
+
+        return ResponseHelper::success($characters);
+    }
+
+    public function result($user_id)
+    {
+        $characters = Character::all();
+        $characters->map(function ($character) use ($user_id) {
+            self::formatCharacter($character, $user_id);
             return $character;
         });
 
         return ResponseHelper::success($characters);
     }
+
 
     /**
      * Show the form for creating a new resource.
