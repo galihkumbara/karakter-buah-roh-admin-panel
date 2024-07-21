@@ -55,11 +55,11 @@ class MemberQuestionController extends Controller
     $member_quiz = MemberQuiz::create([
         'member_id' => $request->user_id,
         'quiz_id' => $request->quiz_id,
-        'reflection'=> $request->answer[6],
+        'reflection'=> $request->answer[8],
         'open_answer'=> $request->open_question[7]
     ]);
     foreach($request->question_id as $key => $question_id){
-        if(Question::find($question_id) == null){
+        if(Question::find($question_id) == null && $question_id != 99999){
             return ResponseHelper::error('Question not found (ID = '.$question_id.')',404);
         }
 

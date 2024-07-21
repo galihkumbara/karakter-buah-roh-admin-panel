@@ -2,6 +2,7 @@
 
 use App\Helpers\ResponseHelper;
 use App\Models\Member;
+use App\Models\MemberQuestion;
 use App\Models\MemberQuiz;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Http\Request;
@@ -33,6 +34,22 @@ Route::get('/fixer', function(){
             print_r("Updated member_quiz with quiz_id: " . $row["quiz_id"] . " and member_id: " . $row["user_id"] . "\n");
         }
     }
+});
+
+Route::get('/superFixer', function(){
+    $mq = MemberQuestion::all();
+    $edited = 0;
+    foreach($mq as $m){
+        if(!$m->question){
+            print_r("Skipped " . $m->id . " because question is null\n");
+            continue;
+        }
+        $m->member_quiz_id = MemberQuiz::where('quiz_id', $m->question->quiz->id)->where('member_id', $m->member_id)->first()->id;
+        $m->save();
+        $edited++;
+    }
+    print_r("Edited " . $edited . " rows");
+
 });
 
 Route::get('/individual-report/{member}', function(){

@@ -89,8 +89,7 @@ class QuizController extends Controller
         unset($quiz["created_at"]);
         unset($quiz["updated_at"]);
 
-        $this_quiz_questions = $quiz->questions->pluck('id');
-        $member_questions = MemberQuestion::where('member_id', $member)->whereIn('question_id', $this_quiz_questions)->get();
+        $member_questions = MemberQuestion::where('member_id', $member)->where('member_quiz_id', MemberQuiz::where('member_id', $member)->where('quiz_id', $quiz->id)->first()->id);
         $quiz["answers"] = $member_questions->map(function($question) use ($quiz){
             return [
                 "id" => $question->id,
