@@ -189,43 +189,53 @@ class MemberController extends Controller
         
         $member->save();
 
-        $member->load('education')
-                ->load('religion')
-                ->load('ethnic')
-                ->load('institute')
-                ->load('modules');
+        $member                    ->load('education')
+        ->load('religion')
+        ->load('member_modules')
+        ->load('institution')
+        ->load('city');
 
-                   //change 'profile_picture_url' key to 'photo'
-        $member['photo'] = $member['profile_picture_url'];
-        unset($member['profile_picture_url']);
+  //change 'profile_picture_url' key to 'photo'
+  $member['photo'] = $member['profile_picture_url'];
+  unset($member['profile_picture_url']);
 
-        //birthdate to year_born
+  //birthdate to year_born
 
-        $member['year_born'] = $member['birthdate']->format('Y');
-        unset($member['birthdate']);
+  $member['year_born'] = $member['birthdate']->format('Y');
+  unset($member['birthdate']);
 
-        $member['phone'] = "213123123";
+  $member['phone'] = "0000";
 
-        //change 'institution' key to 'institute'
-        $member['institute'] = $member['institution'];
-        unset($member['institution']);
+  //change 'institution' key to 'institute'
+  $member['institute'] = $member['institution'];
+  unset($member['institution']);
 
-        //change ethnic key to tribe
-        $member['tribe'] = $member['ethnic'];
-        unset($member['ethnic']);
+  //change ethnic key to tribe
+  $member['tribe'] = $member['ethnic'];
+  unset($member['ethnic']);
+  
+  //change module/is_active key to module/status
+  $member['modules'] = $member['member_modules']->map(function($module){
+      $module['status'] = $module['is_active'] ? 1 : 0;
+      $module->load('module');
+      $module['module']['color_hex'] = $module['module']['color'];
+      $module['module']['order'] = $module['module']['order_number'];
+      $module['module']['status'] = $module['module']['is_active'] ? 1 : 0;
+      unset($module['module']['order_number']);
+      unset($module['module']['color']);
+      unset($module['is_active']);
+      unset($module['module']['is_active']);
+      unset($module['created_at']);
+      unset($module['updated_at']); 
+      unset($module['member_id']);
+      unset($module['module_id']);
+      return $module;
+  });
+  unset($member['city']['province_id']);
 
+  
         
-
-        //change module/is_active key to module/status
-        $member['modules'] = $member['modules']->map(function($module){
-            $module['status'] = $module['pivot']['is_active'];
-            $module['color_hex'] = $module['color'];
-            $module['order'] = $module['order_number'];
-            unset($module['order_number']);
-            unset($module['color']);
-            unset($module['is_active']);
-            return $module;
-        });
+        
         return ResponseHelper::success($member);
 
     }

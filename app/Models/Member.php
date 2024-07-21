@@ -64,6 +64,7 @@ class Member extends Authenticatable
 		'education_id',
 		'religion_id',
 		'ethnic_id',
+		'phone'
 	];
 
 

@@ -56,7 +56,7 @@ class MemberQuestionController extends Controller
         'member_id' => $request->user_id,
         'quiz_id' => $request->quiz_id,
         'reflection'=> $request->answer[6],
-        'open_answer'=> $request->open_question[3]
+        'open_answer'=> $request->open_question[7]
     ]);
     foreach($request->question_id as $key => $question_id){
         if(Question::find($question_id) == null){
