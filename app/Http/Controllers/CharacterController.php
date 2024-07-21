@@ -23,9 +23,9 @@ class CharacterController extends Controller
         unset($character['order_number']);
         $character['status'] = $character['is_active'] ? 1 : 0;
         unset($character['is_active']);
-        $character['quizzes_count'] = $character->quizzes->count();
-        $character['qu_count'] = $character->quizzes->whereIn('id',MemberQuiz::where('member_id', $user_id)->pluck('quiz_id'))->count();
-        $character['complete'] = 0;
+        $character['quizzes_count'] = $character->quizzes->whereIn('id',MemberQuiz::where('member_id', $user_id)->pluck('quiz_id'))->count();
+        $character['qu_count'] = $character->quizzes->count(); 
+        $character['complete'] = $character['quizzes_count'] == $character['qu_count'] ? 1 : 0;
         $character->load('quizzes');
 
         foreach ($character->quizzes as $quiz) {
