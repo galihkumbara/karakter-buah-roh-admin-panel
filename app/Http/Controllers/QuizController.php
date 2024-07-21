@@ -167,7 +167,7 @@ class QuizController extends Controller
             return ResponseHelper::error('Quiz not found',404);
         }
         $quiz->load('questions');
-
+  
         foreach ($quiz->questions as $question) {
             $question['order'] = $question['order_number'];
             unset($question['order_number']);
@@ -184,6 +184,21 @@ class QuizController extends Controller
 
 
         }
+
+        $quiz['questions'][] = [
+            "id" => 1,
+            "question" => "Pertanyaan Refleksi",
+            "order" => 999,
+            "path" => null,
+            "questiontype_id" => 3,
+            "questiontype" => [
+                "id" => 3,
+                "name" => "Refleksi",
+                "created_at" => "2021-07-07T07:00:00.000000Z",
+                "updated_at" => "2021-07-07T07:00:00.000000Z"
+            ]
+        ];
+        
         return ResponseHelper::success($quiz);
     }
 
