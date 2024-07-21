@@ -57,18 +57,20 @@ class MemberQuestionController extends Controller
         if(Question::find($question_id) == null){
             return ResponseHelper::error('Question not found (ID = '.$question_id.')',404);
         }
+        $member_quiz = MemberQuiz::create([
+            'member_id' => $request->user_id,
+            'quiz_id' => $request->quiz_id,
+            'reflection'=> $request->answer[4],
+            'open_answer'=> $request->open_question[3]
+        ]);
         $memberQuestion = MemberQuestion::create([
             'member_id' => $request->user_id,
             'question_id' => $question_id,
             'answer' => $request->choice[$key],
+            'member_quiz_id' => $member_quiz->id
         ]);
     }
-    MemberQuiz::create([
-        'member_id' => $request->user_id,
-        'quiz_id' => $request->quiz_id,
-        'reflection'=> $request->answer[4],
-        'open_answer'=> $request->open_question[3]
-    ]);
+
 
     return ResponseHelper::success($memberQuestion);
     }
