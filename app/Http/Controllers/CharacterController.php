@@ -28,9 +28,10 @@ class CharacterController extends Controller
         $character['complete'] = $character['quizzes_count'] == $character['qu_count'] ? 1 : 0;
         $character->load('quizzes');
 
-        foreach ($character->quizzes as $quiz) {
-            QuizController::formatQuiz($quiz);
-        }
+
+       $character["quizzes"] = $character["quizzes"]->map(function ($quiz) use ($user_id) {
+            return QuizController::formatQuizForComplete($quiz, $user_id);
+        });
     }
 
     public function index()

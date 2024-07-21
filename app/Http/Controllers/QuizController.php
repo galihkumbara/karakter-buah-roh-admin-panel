@@ -30,6 +30,28 @@ class QuizController extends Controller
 
 
     }
+
+    public static function formatQuizForComplete($quiz, $member) {
+        $quiz->load('members');
+        $quiz['status'] = $quiz['is_active'] ? 1 : 0;
+        unset($quiz['is_active']);
+        $quiz['order'] = $quiz['order_number'];
+        unset($quiz['order_number']);
+        $quiz['complete'] = MemberQuiz::where('member_id', $member)->where('quiz_id', $quiz->id)->first() ? 1 : 0;
+        $quiz['completed_at'] = Date('Y-m-d H:i:s');
+
+       $quiz['members'] = $quiz['members']->map(function ($member) {
+            MemberQuizController::formatMemberQuiz($member);
+            return $member;
+        });
+
+        $quiz["users"] = $quiz["members"];
+        unset($quiz["members"]);
+        
+        return $quiz;
+
+
+    }
     public function index()
     {
         $quiz = Quiz::all()
