@@ -36,7 +36,8 @@ class MemberQuestion extends Model
 	protected $fillable = [
 		'member_id',
 		'question_id',
-		'answer'
+		'answer',
+		'member_quiz_id'
 	];
 
 	public function member()
