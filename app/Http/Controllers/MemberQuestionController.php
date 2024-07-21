@@ -52,17 +52,17 @@ class MemberQuestionController extends Controller
     // answer[4]:Jawaban Refleksi
     // open_question[4]:
     // question_id[4]:27
-    
+    $member_quiz = MemberQuiz::create([
+        'member_id' => $request->user_id,
+        'quiz_id' => $request->quiz_id,
+        'reflection'=> $request->answer[6],
+        'open_answer'=> $request->open_question[3]
+    ]);
     foreach($request->question_id as $key => $question_id){
         if(Question::find($question_id) == null){
             return ResponseHelper::error('Question not found (ID = '.$question_id.')',404);
         }
-        $member_quiz = MemberQuiz::create([
-            'member_id' => $request->user_id,
-            'quiz_id' => $request->quiz_id,
-            'reflection'=> $request->answer[6],
-            'open_answer'=> $request->open_question[3]
-        ]);
+
         $memberQuestion = MemberQuestion::create([
             'member_id' => $request->user_id,
             'question_id' => $question_id,

@@ -7,6 +7,7 @@ use App\Models\Quiz;
 use App\Http\Requests\StoreQuizRequest;
 use App\Http\Requests\UpdateQuizRequest;
 use App\Models\MemberQuestion;
+use App\Models\MemberQuiz;
 
 class QuizController extends Controller
 {
@@ -83,6 +84,20 @@ class QuizController extends Controller
             ];
         });
 
+        //append to quiz['answers'] another mock answer
+
+        $quiz["answers"][] = [
+            "id" => 1,
+            "choice" => null,
+            "answer" => MemberQuiz::where('member_id', $member)->where('quiz_id', $quiz->id)->first()->reflection,
+            "status" => 1,
+            "user_id" => $member,
+            "question_id" => 1,
+            "quiz_id" => $quiz->id,
+            "created_at" => "2021-07-07T07:00:00.000000Z",
+            "updated_at" => "2021-07-07T07:00:00.000000Z"
+        ];
+        
       
         return ResponseHelper::success($quiz);
     }
