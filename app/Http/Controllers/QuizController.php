@@ -187,7 +187,7 @@ class QuizController extends Controller
 
         $quiz['questions'][] = [
             "id" => 1,
-            "question" => "Pertanyaan Refleksi",
+            "question" => null,
             "quiz_id" => $quiz->id,
             "order" => 999,
             "path" => null,
