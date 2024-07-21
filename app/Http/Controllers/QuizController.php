@@ -189,6 +189,21 @@ class QuizController extends Controller
             "id" => 1,
             "question" => null,
             "quiz_id" => $quiz->id,
+            "order" => 998,
+            "path" => null,
+            "questiontype_id" => 2,
+            "questiontype" => [
+                "id" => 2,
+                "name" => "Pertanyaan Terbuka",
+                "created_at" => "2021-07-07T07:00:00.000000Z",
+                "updated_at" => "2021-07-07T07:00:00.000000Z"
+            ]
+        ];
+        
+        $quiz['questions'][] = [
+            "id" => 1,
+            "question" => null,
+            "quiz_id" => $quiz->id,
             "order" => 999,
             "path" => null,
             "questiontype_id" => 3,
