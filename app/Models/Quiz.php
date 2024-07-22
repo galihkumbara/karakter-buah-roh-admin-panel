@@ -50,7 +50,8 @@ class Quiz extends Model implements Sortable
 		'name',
 		'is_active',
 		'order_number',
-		'module_id'
+		'module_id',
+		
 	];
 
 	protected $appends = ['path'];

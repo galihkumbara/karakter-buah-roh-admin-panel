@@ -155,7 +155,7 @@ class QuizController extends Controller
             "choice" => null,
             "answer" => null,
             "status" => 1,
-            "open_question" => $quiz->open_question,
+            "open_question" => MemberQuiz::where('member_id', $member)->where('quiz_id', $quiz->id)->first()->open_question,
             "user_id" => $member,
             "question_id" => 99999,
             "quiz_id" => $quiz->id,
