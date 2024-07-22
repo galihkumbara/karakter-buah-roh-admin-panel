@@ -142,10 +142,12 @@ class QuizController extends Controller
             ];
         });
 
-        //remove null values
-        $quiz["answers"] = array_filter($quiz["answers"]);
+        //remove null values from answers collection
+        $quiz["answers"] = $quiz["answers"]->filter(function($answer){
+            return $answer != null;
+        });
 
-        
+
 
         //append to quiz['answers'] another mock answer
         $quiz["answers"][] = [
