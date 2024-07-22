@@ -228,7 +228,7 @@ class QuizController extends Controller
         }
 
         $quiz['questions'][] = [
-            "id" => 1,
+            "id" => 99999,
             "question" => null,
             "quiz_id" => $quiz->id,
             "order" => 998,
@@ -243,7 +243,7 @@ class QuizController extends Controller
         ];
         
         $quiz['questions'][] = [
-            "id" => 1,
+            "id" => 99999,
             "question" => null,
             "quiz_id" => $quiz->id,
             "order" => 999,
