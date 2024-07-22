@@ -142,6 +142,11 @@ class QuizController extends Controller
             ];
         });
 
+        //remove null values
+        $quiz["answers"] = array_filter($quiz["answers"]);
+
+        
+
         //append to quiz['answers'] another mock answer
         $quiz["answers"][] = [
             "id" => 99999,
