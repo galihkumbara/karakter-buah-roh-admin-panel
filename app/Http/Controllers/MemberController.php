@@ -50,6 +50,14 @@ class MemberController extends Controller
 // role:1
 
 //request will contain above key and value, make member based on that
+        if($request->password != $request->password_confirmation){
+            return ResponseHelper::error('Password and password confirmation does not match', 422);
+        }
+
+        if(Member::where('email', $request->email)->first()){
+            return ResponseHelper::error('Email already registered', 422);
+        }
+
         $member = Member::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -63,7 +71,49 @@ class MemberController extends Controller
             'birthdate' => $request->year_born . '-01-01',
             'address' => $request->address,
         ]);
+        $member->load('education')
+        ->load('religion')
+        ->load('member_modules')
+        ->load('institution')
+        ->load('city');
 
+
+        //change 'profile_picture_url' key to 'photo'
+        $member['photo'] = $member['profile_picture_url'];
+        unset($member['profile_picture_url']);
+
+        //birthdate to year_born
+
+        $member['year_born'] = $member['birthdate']->format('Y');
+        unset($member['birthdate']);
+
+        //change 'institution' key to 'institute'
+        $member['institute'] = $member['institution'];
+        unset($member['institution']);
+
+        //change ethnic key to tribe
+        $member['tribe'] = $member['ethnic'];
+        unset($member['ethnic']);
+
+        //change module/is_active key to module/status
+        $member['modules'] = $member['member_modules']->map(function($module){
+        $module['status'] = $module['is_active'] ? 1 : 0;
+        $module->load('module');
+        $module['module']['color_hex'] = $module['module']['color'];
+        $module['module']['order'] = $module['module']['order_number'];
+        $module['module']['status'] = $module['module']['is_active'] ? 1 : 0;
+        unset($module['module']['order_number']);
+        unset($module['module']['color']);
+        unset($module['is_active']);
+        unset($module['module']['is_active']);
+        unset($module['created_at']);
+        unset($module['updated_at']); 
+        unset($module['member_id']);
+        unset($module['module_id']);
+        return $module;
+    });
+    // unset($member['city']['province_id']);
+        
         return ResponseHelper::success($member);
     }
 

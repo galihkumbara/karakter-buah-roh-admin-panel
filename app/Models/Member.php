@@ -64,7 +64,8 @@ class Member extends Authenticatable
 		'education_id',
 		'religion_id',
 		'ethnic_id',
-		'phone'
+		'phone',
+		'city_id'
 	];
 
 
@@ -103,8 +104,7 @@ class Member extends Authenticatable
 
 	public function city()
 	{
-		//without province_id variable
-		return $this->belongsTo(Regency::class);
+		return $this->belongsTo(Regency::class, 'city_id', 'id');
 	}
 
 	public function institution()
