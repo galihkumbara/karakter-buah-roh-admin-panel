@@ -22,6 +22,7 @@ use App\Http\Controllers\VillageController;
 use App\Models\Character;
 use App\Models\MemberModule;
 use App\Models\QuestionnaireQuestionMember;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -50,6 +51,10 @@ Route::apiResource('location/city', RegencyController::class);
 Route::apiResource('location/district', DistrictController::class);
 Route::apiResource('/contents', ContentController::class);
 Route::get('user/quiz/{id}/results/{member}', [QuizController::class, 'results']);
+
+Route::get('user/{user_id}/transactions/onprogress', [TransactionController::class, 'onProgress']);
+
+
 
 Route::get('env', function(){
     return ResponseHelper::success([

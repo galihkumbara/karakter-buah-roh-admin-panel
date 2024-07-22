@@ -18,6 +18,12 @@ class TransactionController extends Controller
         return ResponseHelper::success($transactions->load('modules'));
     }
 
+    public function onProgress($user_id)
+    {
+        $transactions = Transaction::where('user_id', $user_id)->where('user_id', null)->get();
+        return ResponseHelper::success($transactions->load('modules'));
+    }
+
     public function store(Request $request)
     {
         try {
