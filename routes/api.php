@@ -59,6 +59,11 @@ Route::get('/user/{user_id}/questionnaires/not_finished', [QuestionnaireControll
 
 
 
+Route::post('logout', function(){
+    return ResponseHelper::success([
+        'message' => 'Logout success'
+    ]);
+});
 
 Route::get('env', function(){
     return ResponseHelper::success([
