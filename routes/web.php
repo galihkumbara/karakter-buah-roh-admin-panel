@@ -36,6 +36,8 @@ Route::get('/fixer', function(){
     }
 });
 
+
+
 Route::get('/superFixer', function(){
     $mq = MemberQuestion::all();
     $edited = 0;

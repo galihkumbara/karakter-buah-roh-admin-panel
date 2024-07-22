@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('/transactions', TransactionController::class);
 Route::apiResource('/questionnaires', QuestionnaireController::class);
 Route::apiResource('/questionnairemembers', QuestionnaireQuestionMemberController::class);
+
 Route::post('/membermodules', [MemberModuleController::class, 'ModuleByMember']);
 Route::post('/register', [MemberController::class, 'store']);
 Route::apiResource('user/module', ModuleController::class);
@@ -54,6 +55,7 @@ Route::get('user/quiz/{id}/results/{member}', [QuizController::class, 'results']
 
 Route::get('user/{user_id}/transactions/onprogress', [TransactionController::class, 'onProgress']);
 
+Route::get('/user/{user_id}/questionnaires/not_finished', [QuestionnaireController::class, 'userNotDoneQuestionnaire']);
 
 
 Route::get('env', function(){
