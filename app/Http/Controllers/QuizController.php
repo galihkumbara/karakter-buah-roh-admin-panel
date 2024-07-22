@@ -65,13 +65,43 @@ class QuizController extends Controller
                 unset($question['created_at']);
                 unset($question['updated_at']);
                 $question['questiontype_id'] = 1;
-                $question['questiontyoe'] = [
+                $question['questiontype'] = [
                     "id" => 1,
                     "name" => "Berhasil/Gagal",
                     "created_at" => "2021-07-07T07:00:00.000000Z",
                     "updated_at" => "2021-07-07T07:00:00.000000Z"
                 ];
             }
+
+            $q['questions'][] = [
+                "id" => 99999,
+                "question" => null,
+                "quiz_id" => $q->id,
+                "order" => 998,
+                "path" => null,
+                "questiontype_id" => 2,
+                "questiontype" => [
+                    "id" => 2,
+                    "name" => "Pertanyaan Terbuka",
+                    "created_at" => "2021-07-07T07:00:00.000000Z",
+                    "updated_at" => "2021-07-07T07:00:00.000000Z"
+                ]
+            ];
+
+            $q['questions'][] = [
+                "id" => 99999,
+                "question" => null,
+                "quiz_id" => $q->id,
+                "order" => 999,
+                "path" => null,
+                "questiontype_id" => 3,
+                "questiontype" => [
+                    "id" => 3,
+                    "name" => "Refleksi",
+                    "created_at" => "2021-07-07T07:00:00.000000Z",
+                    "updated_at" => "2021-07-07T07:00:00.000000Z"
+                ]
+            ];
         }
 
 
