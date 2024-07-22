@@ -118,9 +118,16 @@ class QuizController extends Controller
         unset($quiz["character_id"]);
         unset($quiz["created_at"]);
         unset($quiz["updated_at"]);
-
+        if(MemberQuiz::where('member_id', $member)->where('quiz_id', $quiz->id)->first() == null){
+            $quiz["answers"] = [];
+            return ResponseHelper::success($quiz);
+        }
         $member_questions = MemberQuestion::where('member_id', $member)->where('member_quiz_id', MemberQuiz::where('member_id', $member)->where('quiz_id', $quiz->id)->first()->id)->get();
         $quiz["answers"] = $member_questions->map(function($question) use ($quiz){
+            //if id is 99999, don't return it
+            if($question->question_id == 99999){
+                return;
+            }
             return [
                 "id" => $question->id,
                 "choice" => $question->answer,
@@ -136,9 +143,23 @@ class QuizController extends Controller
         });
 
         //append to quiz['answers'] another mock answer
+        $quiz["answers"][] = [
+            "id" => 99999,
+            "choice" => null,
+            "answer" => null,
+            "status" => 1,
+            "open_question" => $quiz->open_question,
+            "user_id" => $member,
+            "question_id" => 99999,
+            "quiz_id" => $quiz->id,
+            "created_at" => "2021-07-07T07:00:00.000000Z",
+            "updated_at" => "2021-07-07T07:00:00.000000Z"
+        ];
+        
+
 
         $quiz["answers"][] = [
-            "id" => 1,
+            "id" => 99999,
             "choice" => null,
             "answer" => MemberQuiz::where('member_id', $member)->where('quiz_id', $quiz->id)->first()->reflection,
             "status" => 1,
@@ -150,17 +171,6 @@ class QuizController extends Controller
         ];
 
 
-        $quiz["answers"][] = [
-            "id" => 1,
-            "choice" => null,
-            "answer" => null,
-            "status" => 1,
-            "user_id" => $member,
-            "question_id" => 99999,
-            "quiz_id" => $quiz->id,
-            "created_at" => "2021-07-07T07:00:00.000000Z",
-            "updated_at" => "2021-07-07T07:00:00.000000Z"
-        ];
         
       
         return ResponseHelper::success($quiz);
