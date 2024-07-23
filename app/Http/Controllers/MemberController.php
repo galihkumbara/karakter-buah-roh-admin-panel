@@ -123,7 +123,8 @@ class MemberController extends Controller
         return $module;
     });
     // unset($member['city']['province_id']);
-        
+        //atach first module to member
+        $member->modules()->attach(1, ['is_active' => true]);
         return ResponseHelper::success($member);
     }
 
