@@ -92,5 +92,5 @@ Route::post('/api/login', function (Request $request) {
       }
         
     }
-    return response()->json(['error' => 'Unauthorized'], 401);
+    return ResponseHelper::error("Invalid credentials", 401);
 })->withoutMiddleware(VerifyCsrfToken::class);
