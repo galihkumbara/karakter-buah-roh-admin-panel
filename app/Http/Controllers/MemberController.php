@@ -49,6 +49,7 @@ class MemberController extends Controller
 // address:Jl. Mawar 123
 // role:1
 //request will contain above key and value, make member based on that
+  
         if($request->password != $request->password_confirmation){
             return ResponseHelper::error('Password and password confirmation does not match', 422);
         }
@@ -61,7 +62,11 @@ class MemberController extends Controller
         if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)){
             return ResponseHelper::error('Email is not in valid format', 422);
         }
-
+        $photo = "";
+        if($request->hasFile('photo')){
+            //save to storage
+            $photo = $request->file('photo')->store('public');
+        }
         $member = Member::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -74,6 +79,7 @@ class MemberController extends Controller
             'password' => bcrypt($request->password),
             'birthdate' => $request->year_born . '-01-01',
             'address' => $request->address,
+            'profile_picture_url' => $photo
         ]);
         $member->load('education')
         ->load('religion')
@@ -207,7 +213,14 @@ class MemberController extends Controller
 
         //we need to map it to the correct key
         $member = Member::find($member);
-        
+       //if request has file 'photo'
+       if($request->hasFile('photo')){
+            //save to storage
+            $path = $request->file('photo')->store('public');
+            $member->profile_picture_url = $path;
+       }
+
+       
         if ($request->has('name')) {
             $member->name = $request->name;
         }
