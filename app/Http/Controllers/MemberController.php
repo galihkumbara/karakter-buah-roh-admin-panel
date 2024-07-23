@@ -217,6 +217,8 @@ class MemberController extends Controller
        if($request->hasFile('photo')){
             //save to storage
             $path = $request->file('photo')->store('public');
+            //change 'public' to 'storage'
+            $path = str_replace('public', 'storage', $path);
             $member->profile_picture_url = $path;
        }
 
