@@ -228,7 +228,7 @@ class MemberController extends Controller
         }
         
         if ($request->has('password')) {
-            $member->password = $request->password;
+            $member->password = bcrypt($request->password);
         }
         
         // Update birthdate only if year_born is present in the request
