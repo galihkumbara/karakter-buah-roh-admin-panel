@@ -83,7 +83,9 @@ class TransactionController extends Controller
             ]);
 
             if ($request->hasFile('proof_of_payment_url')) {
-                $validatedData['proof_of_payment_url'] = $request->file('proof_of_payment_url')->store('proof_of_payment');
+                $validatedData['proof_of_payment_url'] = $request->file('proof_of_payment_url')->store('public/proof_of_payment');
+                //remove public change to storage
+                $validatedData['proof_of_payment_url'] = str_replace('public/', 'storage/', $validatedData['proof_of_payment_url']);
             }
 
             $transaction = Transaction::findOrFail($id);
