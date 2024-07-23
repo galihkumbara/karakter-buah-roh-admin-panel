@@ -266,8 +266,6 @@ class MemberController extends Controller
   $member['year_born'] = $member['birthdate']->format('Y');
   unset($member['birthdate']);
 
-  $member['phone'] = "0000";
-
   //change 'institution' key to 'institute'
   $member['institute'] = $member['institution'];
   unset($member['institution']);
