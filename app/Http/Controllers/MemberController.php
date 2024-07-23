@@ -48,7 +48,6 @@ class MemberController extends Controller
 // year_born:2000
 // address:Jl. Mawar 123
 // role:1
-
 //request will contain above key and value, make member based on that
         if($request->password != $request->password_confirmation){
             return ResponseHelper::error('Password and password confirmation does not match', 422);
@@ -56,6 +55,11 @@ class MemberController extends Controller
 
         if(Member::where('email', $request->email)->first()){
             return ResponseHelper::error('Email already registered', 422);
+        }
+
+        //if member email is not in email format
+        if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)){
+            return ResponseHelper::error('Email is not in valid format', 422);
         }
 
         $member = Member::create([
@@ -235,6 +239,14 @@ class MemberController extends Controller
         
         if ($request->has('education_id')) {
             $member->education_id = $request->education_id;
+        }
+
+        if ($request->has('city_id')) {
+            $member->city_id = $request->city_id;
+        }
+
+        if ($request->has('phone')) {
+            $member->phone = $request->phone;
         }
         
         $member->save();
