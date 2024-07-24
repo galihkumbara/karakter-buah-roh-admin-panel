@@ -47,11 +47,13 @@ class CharacterController extends Controller
 
     public function result($user_id)
     {
-        $characters = Character::all()->sortBy('order_number');
+        $characters = Character::all();
         $characters->map(function ($character) use ($user_id) {
             self::formatCharacter($character, $user_id);
             return $character;
         });
+
+        $characters = $characters->sortBy('order_number');
 
         return ResponseHelper::success($characters);
     }
