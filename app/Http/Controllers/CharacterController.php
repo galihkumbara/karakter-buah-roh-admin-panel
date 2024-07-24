@@ -53,7 +53,7 @@ class CharacterController extends Controller
             return $character;
         });
 
-        $characters = $characters->sortBy('order_number');
+        $characters = $characters->sortBy('order');
 
         return ResponseHelper::success($characters);
     }
