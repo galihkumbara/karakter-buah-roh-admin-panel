@@ -40,7 +40,7 @@ class CharacterController extends Controller
 
     public function index()
     {
-        $characters = Character::all();
+        $characters = Character::all()->sortBy('order_number');
         // $characters->map(function ($character) {
         //     self::formatCharacter($character);
         //     return $character;
@@ -51,7 +51,7 @@ class CharacterController extends Controller
 
     public function result($user_id)
     {
-        $characters = Character::all();
+        $characters = Character::all()->sortBy('order_number');
         $characters->map(function ($character) use ($user_id) {
             self::formatCharacter($character, $user_id);
             return $character;
