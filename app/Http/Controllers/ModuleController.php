@@ -14,7 +14,7 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        $module = Module::all()->orderBy('order_number')
+        $module = Module::all()->sortBy('order_number')
         ->map(function ($module) {
             $module['status'] = $module['is_active'] ? 1 : 0;
             unset($module['is_active']);

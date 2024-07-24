@@ -55,7 +55,7 @@ class QuizController extends Controller
     public function index()
     {
         $quiz = Quiz::all()
-                    ->orderBy('order_number')
+                    ->sortBy('order_number')
                     ->load([
                         'questions' => function($query) {
                             $query->orderBy('order_number');
