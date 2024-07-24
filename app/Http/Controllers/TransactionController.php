@@ -21,7 +21,9 @@ class TransactionController extends Controller
     public function onProgress($user_id)
     {
         $transactions = Transaction::where('member_id', $user_id)->where('user_id', null)->get();
-        return ResponseHelper::success($transactions->load('modules'));
+        foreach ($transactions as $transaction) {
+            $transaction['modules'] = $transaction->modules->first();        
+        }
     }
 
     public function store(Request $request)
