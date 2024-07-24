@@ -62,6 +62,15 @@ class Transaction extends Model
 					->withTimestamps();
 	}
 
+	public function first_modules(){
+		$x = TransactionModule::where('transaction_id', $this->id)->first();
+		if($x){
+			return $x->module;
+		}else{
+			return null;
+		}
+	}
+
 	public function transaction_modules()
 	{
 		return $this->hasMany(TransactionModule::class);

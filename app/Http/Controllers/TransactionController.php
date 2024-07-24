@@ -22,7 +22,7 @@ class TransactionController extends Controller
     {
         $transactions = Transaction::where('member_id', $user_id)->where('user_id', null)->get();
         foreach ($transactions as $transaction) {
-            $transaction['modules'] = $transaction->modules->first();        
+            $transaction['modules'] = $transaction->first_modules();        
         }
         return ResponseHelper::success($transactions);
     }
