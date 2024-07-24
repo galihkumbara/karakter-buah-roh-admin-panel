@@ -14,7 +14,7 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        $module = Module::all()
+        $module = Module::all()->orderBy('order_number')
         ->map(function ($module) {
             $module['status'] = $module['is_active'] ? 1 : 0;
             unset($module['is_active']);
@@ -52,7 +52,9 @@ class ModuleController extends Controller
             'price' => $price
         ]);
 
-        return ResponseHelper::success($module->load('characters'));
+        return ResponseHelper::success(  $module->load(['characters' => function($query) {
+            $query->orderBy('order_number');
+        }]));
     }
 
     /**
@@ -72,7 +74,9 @@ class ModuleController extends Controller
         //change hex_color to color
         $module['color_hex'] = $module['color'];
         unset($module['color']);
-        $module->load('characters');
+        $module->load(['characters' => function($query) {
+            $query->orderBy('order_number');
+        }]);
         unset($module['created_at']);
         unset($module['updated_at']);
         

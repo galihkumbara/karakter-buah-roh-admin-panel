@@ -40,7 +40,7 @@ class QuizController extends Controller
         $quiz['complete'] = MemberQuiz::where('member_id', $member)->where('quiz_id', $quiz->id)->first() ? 1 : 0;
         $quiz['completed_at'] = Date('Y-m-d H:i:s');
 
-       $quiz['members'] = $quiz['members']->map(function ($member) {
+    $quiz['members'] = $quiz['members']->map(function ($member) {
             MemberQuizController::formatMemberQuiz($member);
             return $member;
         });
@@ -55,7 +55,12 @@ class QuizController extends Controller
     public function index()
     {
         $quiz = Quiz::all()
-                    ->load('questions');
+                    ->orderBy('order_number')
+                    ->load([
+                        'questions' => function($query) {
+                            $query->orderBy('order_number');
+                        }
+                    ]);
         
         foreach ($quiz as $q) {
             foreach ($q->questions as $question) {
@@ -179,7 +184,7 @@ class QuizController extends Controller
 
 
         
-      
+    
         return ResponseHelper::success($quiz);
     }
 
@@ -206,7 +211,11 @@ class QuizController extends Controller
             'character_id' => $character_id
         ]);
 
-        $quiz->load('questions');
+        $quiz->load([
+            'questions' => function($query) {
+                $query->orderBy('order_number');
+            }
+        ]);
 
         foreach ($quiz->questions as $question) {
             $question['order'] = $question['order_number'];
@@ -225,8 +234,12 @@ class QuizController extends Controller
         if (!$quiz) {
             return ResponseHelper::error('Quiz not found',404);
         }
-        $quiz->load('questions');
-  
+        $quiz->load([
+            'questions' => function($query) {
+                $query->orderBy('order_number');
+            }
+        ]);
+
         foreach ($quiz->questions as $question) {
             $question['order'] = $question['order_number'];
             unset($question['order_number']);
@@ -300,7 +313,11 @@ class QuizController extends Controller
             'character_id' => $character_id
         ]);
 
-        $quiz->load('questions');
+        $quiz->load([
+            'questions' => function($query) {
+                $query->orderBy('order_number');
+            }
+        ]);
 
         foreach ($quiz->questions as $question) {
             $question['order'] = $question['order_number'];

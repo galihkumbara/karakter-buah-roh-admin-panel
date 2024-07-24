@@ -26,7 +26,11 @@ class CharacterController extends Controller
         $character['quizzes_count'] = $character->quizzes->whereIn('id',MemberQuiz::where('member_id', $user_id)->pluck('quiz_id'))->count();
         $character['qu_count'] = $character->quizzes->count(); 
         $character['complete'] = $character['quizzes_count'] == $character['qu_count'] ? 1 : 0;
-        $character->load('quizzes');
+        $character->load([
+            'quizzes' => function ($query) use ($user_id) {
+                $query->orderBy('order_number');
+            }
+        ]);
 
 
        $character["quizzes"] = $character["quizzes"]->map(function ($quiz) use ($user_id) {
@@ -102,7 +106,11 @@ class CharacterController extends Controller
         $character['status'] = $character['is_active'];
         unset($character['is_active']);
 
-        $character->load('quizzes');
+        $character->load([
+            'quizzes' => function ($query) {
+                $query->orderBy('order_number');
+            }
+        ]);
 
         foreach ($character->quizzes as $quiz) {
             $quiz['order'] = $quiz['order_number'];
