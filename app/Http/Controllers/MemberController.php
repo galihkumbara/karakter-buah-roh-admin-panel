@@ -108,10 +108,7 @@ class MemberController extends Controller
         //change module/is_active key to module/status
         $member['modules'] = $member['member_modules']->map(function($module){
         $module['status'] = $module['is_active'] ? 1 : 0;
-        //module by order_number
-        $module->load(['module' => function($query){
-            $query->orderBy('order_number');
-        }]);
+        $module->load('module');
         $module['module']['color_hex'] = $module['module']['color'];
         $module['module']['order'] = $module['module']['order_number'];
         $module['module']['status'] = $module['module']['is_active'] ? 1 : 0;
@@ -169,9 +166,7 @@ class MemberController extends Controller
         //change module/is_active key to module/status
         $member['modules'] = $member['member_modules']->map(function($module){
             $module['status'] = $module['is_active'] ? 1 : 0;
-            $module->load(['module' => function($query){
-                $query->orderBy('order_number');
-            }]);
+            $module->load('module');
             $module['module']['color_hex'] = $module['module']['color'];
             $module['module']['order'] = $module['module']['order_number'];
             $module['module']['status'] = $module['module']['is_active'] ? 1 : 0;
@@ -299,11 +294,7 @@ class MemberController extends Controller
   //change module/is_active key to module/status
   $member['modules'] = $member['member_modules']->map(function($module){
       $module['status'] = $module['is_active'] ? 1 : 0;
-      $module->load([
-            'module' => function($query){
-                $query->orderBy('order_number');
-            }
-      ]);
+      $module->load('module');
       $module['module']['color_hex'] = $module['module']['color'];
       $module['module']['order'] = $module['module']['order_number'];
       $module['module']['status'] = $module['module']['is_active'] ? 1 : 0;
@@ -363,11 +354,7 @@ class MemberController extends Controller
   //change module/is_active key to module/status
   $member['modules'] = $member['member_modules']->map(function($module){
       $module['status'] = $module['is_active'] ? 1 : 0;
-      $module->load([
-            'module' => function($query){
-                $query->orderBy('order_number');
-            }
-      ]);
+      $module->load('module');
       $module['module']['color_hex'] = $module['module']['color'];
       $module['module']['order'] = $module['module']['order_number'];
       $module['module']['status'] = $module['module']['is_active'] ? 1 : 0;
@@ -383,9 +370,7 @@ class MemberController extends Controller
   });
   unset($member['city']['province_id']);
 
-        //modules by order_number
-        return ResponseHelper::success($member->load(['modules' => function($query){
-            $query->orderBy('order_number');
-        }]));
+  
+        return ResponseHelper::success($member->load('modules'));
     }
 }

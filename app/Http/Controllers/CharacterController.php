@@ -26,11 +26,7 @@ class CharacterController extends Controller
         $character['quizzes_count'] = $character->quizzes->whereIn('id',MemberQuiz::where('member_id', $user_id)->pluck('quiz_id'))->count();
         $character['qu_count'] = $character->quizzes->count(); 
         $character['complete'] = $character['quizzes_count'] == $character['qu_count'] ? 1 : 0;
-        $character->load([
-            'quizzes' => function ($query) use ($user_id) {
-                $query->orderBy('order_number');
-            }
-        ]);
+        $character->load('quizzes');
 
 
        $character["quizzes"] = $character["quizzes"]->map(function ($quiz) use ($user_id) {
@@ -40,7 +36,7 @@ class CharacterController extends Controller
 
     public function index()
     {
-        $characters = Character::all()->sortBy('order_number');
+        $characters = Character::all();
         // $characters->map(function ($character) {
         //     self::formatCharacter($character);
         //     return $character;
@@ -51,7 +47,7 @@ class CharacterController extends Controller
 
     public function result($user_id)
     {
-        $characters = Character::all()->sortBy('order_number');
+        $characters = Character::all();
         $characters->map(function ($character) use ($user_id) {
             self::formatCharacter($character, $user_id);
             return $character;
@@ -106,11 +102,7 @@ class CharacterController extends Controller
         $character['status'] = $character['is_active'];
         unset($character['is_active']);
 
-        $character->load([
-            'quizzes' => function ($query) {
-                $query->orderBy('order_number');
-            }
-        ]);
+        $character->load('quizzes');
 
         foreach ($character->quizzes as $quiz) {
             $quiz['order'] = $quiz['order_number'];
