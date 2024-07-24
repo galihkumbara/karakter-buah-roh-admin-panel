@@ -15,7 +15,10 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = Transaction::all();
-        return ResponseHelper::success($transactions->load('modules'));
+        $transactions->map(function ($transaction) {
+            $transaction['modules'] = $transaction->first_modules();
+        });
+        return ResponseHelper::success($transactions);
     }
 
     public function onProgress($user_id)
@@ -54,9 +57,9 @@ class TransactionController extends Controller
             ]);
 
             
-
+            $transaction['modules'] = $transaction->first_modules();
             
-            return ResponseHelper::success($transaction->load('modules'), 'Transaction created successfully', 201);
+            return ResponseHelper::success($transaction, 'Transaction created successfully', 201);
         } catch (ValidationException $e) {
             return ResponseHelper::error($e->errors(), 422);
         } catch (Exception $e) {
@@ -68,7 +71,8 @@ class TransactionController extends Controller
     {
         try {
             $transaction = Transaction::findOrFail($id);
-            return ResponseHelper::success($transaction->load('modules'));
+            $transaction['modules'] = $transaction->first_modules();
+            return ResponseHelper::success($transaction);
         } catch (ModelNotFoundException $e) {
             return ResponseHelper::error('Transaction not found', 404);
         }
@@ -100,8 +104,8 @@ class TransactionController extends Controller
                     'price' => $module_selected->price
                 ]);
             }
-
-            return ResponseHelper::success($transaction->load('modules'), 'Transaction updated successfully');
+            $transaction['modules'] = $transaction->first_modules();
+            return ResponseHelper::success($transaction, 'Transaction updated successfully');
         } catch (ModelNotFoundException $e) {
             return ResponseHelper::error('Transaction not found', 404);
         } catch (ValidationException $e) {
