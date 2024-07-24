@@ -24,6 +24,7 @@ class TransactionController extends Controller
         foreach ($transactions as $transaction) {
             $transaction['modules'] = $transaction->modules->first();        
         }
+        return ResponseHelper::success($transactions);
     }
 
     public function store(Request $request)
