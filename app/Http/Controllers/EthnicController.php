@@ -14,7 +14,9 @@ class EthnicController extends Controller
      */
     public function index()
     {
-        return ResponseHelper::success(Ethnic::all());
+        //sort by alphabetical order
+        $ethnic = Ethnic::all()->sortBy('name')->values();
+        return ResponseHelper::success($ethnic);
     }
 
     /**

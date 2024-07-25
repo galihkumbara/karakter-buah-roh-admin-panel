@@ -14,7 +14,7 @@ class InstitutionController extends Controller
      */
     public function index()
     {
-        return ResponseHelper::success(Institution::all());
+        return ResponseHelper::success(Institution::all()->sortBy('name')->values());
     }
 
     /**

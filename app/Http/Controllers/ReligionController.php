@@ -14,7 +14,7 @@ class ReligionController extends Controller
      */
     public function index()
     {
-        return ResponseHelper::success(Religion::all());
+        return ResponseHelper::success(Religion::all()->sortBy('name')->values());
     }
 
     /**
