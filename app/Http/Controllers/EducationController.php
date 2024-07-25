@@ -14,7 +14,7 @@ class EducationController extends Controller
      */
     public function index()
     {
-        return ResponseHelper::success(Education::all()->sortBy('name')->values());
+        return ResponseHelper::success(Education::all());
     }
 
     /**
