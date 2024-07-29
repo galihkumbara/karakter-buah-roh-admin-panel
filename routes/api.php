@@ -37,6 +37,8 @@ Route::apiResource('user/module', ModuleController::class);
 Route::apiResource('user/character', CharacterController::class);
 Route::get('user/character/{user_id}/result', [CharacterController::class, 'result']);
 
+
+
 Route::apiResource('user/religion', ReligionController::class);
 Route::apiResource('user/tribe', EthnicController::class);
 Route::apiResource('user/institute', InstitutionController::class);
@@ -57,7 +59,7 @@ Route::get('user/{user_id}/transactions/onprogress', [TransactionController::cla
 
 Route::get('/user/{user_id}/questionnaires/not_finished', [QuestionnaireController::class, 'userNotDoneQuestionnaire']);
 
-
+Route::post('/user/forgot_password', [MemberController::class, 'forgotPassword']);
 
 Route::post('logout', function(){
     return ResponseHelper::success([

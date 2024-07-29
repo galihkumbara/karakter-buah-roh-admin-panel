@@ -186,6 +186,22 @@ class MemberController extends Controller
         return ResponseHelper::success($member);
     }
 
+    public function forgotPassword(Request $request){
+        $member = Member::where('email', $request->email)->first();
+        
+        if(!$member){
+            return ResponseHelper::error('Email not found', 404);
+        }
+
+        if($member->password != $request->old_password){
+            return ResponseHelper::error('Old password is incorrect', 422);
+        }
+
+        $newPassword = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 8);
+        $member->password = bcrypt($newPassword);
+        $member->save();
+        return ResponseHelper::success(['new_password' => $newPassword]);
+    }
     /**
      * Show the form for editing the specified resource.
      */
