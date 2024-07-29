@@ -193,9 +193,6 @@ class MemberController extends Controller
             return ResponseHelper::error('Email not found', 404);
         }
 
-        if($member->password != $request->old_password){
-            return ResponseHelper::error('Old password is incorrect', 422);
-        }
 
         $newPassword = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 8);
         $member->password = bcrypt($newPassword);
