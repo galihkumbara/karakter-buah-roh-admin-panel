@@ -37,7 +37,8 @@ class TransactionResource extends Resource
                     ->label('Deskripsi')
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('proof_of_payment_url')
-                    ->label('Bukti Bayar'),
+                    ->label('Bukti Bayar')
+                    ->directory('proof_of_payment'),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user','name')
                     ->label('Diverifikasi Oleh')
@@ -84,7 +85,17 @@ class TransactionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('proof_of_payment_url')
+                Tables\Columns\ImageColumn::make('proof_of_payment_url')   
+                    ->getStateUsing(function($record){
+                        //if contains 'storage/' remove it
+                        $proof_of_payment_url = $record->proof_of_payment_url;
+                        if(strpos($proof_of_payment_url, 'storage/') !== false){
+                            $proof_of_payment_url = substr($proof_of_payment_url, 8);
+                        }
+                        return $proof_of_payment_url;
+                    })
+                
+
                     ->label('Bukti Bayar'),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Diverifikasi Oleh')

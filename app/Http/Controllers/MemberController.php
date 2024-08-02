@@ -185,19 +185,30 @@ class MemberController extends Controller
         
         return ResponseHelper::success($member);
     }
-
-    public function forgotPassword(Request $request){
+    private $key = 'karakterbuahroh2024';
+    public function forgotPassword(Request $request)
+    {
         $member = Member::where('email', $request->email)->first();
         
         if(!$member){
             return ResponseHelper::error('Email not found', 404);
         }
 
-
         $newPassword = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 8);
+        $encryptedPassword = $this->encrypt($newPassword);
         $member->password = bcrypt($newPassword);
         $member->save();
-        return ResponseHelper::success(['new_password' => $newPassword]);
+
+        return ResponseHelper::success(['new_password' => $encryptedPassword]);
+    }
+
+    private function encrypt($data)
+    {
+        $cipher = "aes-256-cbc";
+        $ivlen = openssl_cipher_iv_length($cipher);
+        $iv = openssl_random_pseudo_bytes($ivlen);
+        $ciphertext = openssl_encrypt($data, $cipher, $this->key, $options=0, $iv);
+        return base64_encode($iv . $ciphertext);
     }
     /**
      * Show the form for editing the specified resource.
@@ -245,7 +256,6 @@ class MemberController extends Controller
         if ($request->has('password')) {
             $member->password = bcrypt($request->password);
         }
-        
         // Update birthdate only if year_born is present in the request
         if ($request->has('year_born')) {
             $member->birthdate = $request->year_born . '-01-01';
