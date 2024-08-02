@@ -48,7 +48,7 @@ class TransactionResource extends Resource
                             $url = substr($url, 8);
                         }
                         return new HtmlString('
-                        <div class="fi-fo-placeholder text-sm leading-6" style="
+                        <div class="" style="
                             overflow-y: scroll;
                             height: 300px;
                             padding: 10px;
