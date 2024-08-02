@@ -47,7 +47,21 @@ class TransactionResource extends Resource
                         if(strpos($url, 'storage/') !== false){
                             $url = substr($url, 8);
                         }
-                        return new HtmlString('<img src="'.asset('storage/'.$url).'" style="max-width: 100%; max-height: 200px;">');
+                        return new HtmlString('
+                        <div class="fi-fo-placeholder text-sm leading-6" style="
+                            overflow-y: scroll;
+                            height: 300px;
+                            padding: 10px;
+                            border-width: 2px;
+                            border-color: rgba(var(--gray-500),var(--tw-border-opacity,1));
+                            border-radius: 10px;
+                            background-color: hsla(0,0%,100%,.05);
+                        ">
+                            <img src="'.asset('storage/'.$url).'" style="width: 100%;">
+                        </div>
+                  
+                    
+                        ');
                     }),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user','name')
