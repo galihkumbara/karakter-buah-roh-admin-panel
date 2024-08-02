@@ -38,6 +38,13 @@ class TransactionResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('proof_of_payment_url')
                     ->label('Bukti Bayar')
+                    ->formatStateUsing(function($value){
+                        //if contains 'storage/' remove it
+                        if(strpos($value, 'storage/') !== false){
+                            $value = substr($value, 8);
+                        }
+                        return $value;
+                    })
                     ->directory('proof_of_payment'),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user','name')
