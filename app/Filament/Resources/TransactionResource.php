@@ -16,6 +16,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 
 class TransactionResource extends Resource
 {
@@ -36,16 +37,18 @@ class TransactionResource extends Resource
                 Forms\Components\Textarea::make('description')
                     ->label('Deskripsi')
                     ->columnSpanFull(),
-                Forms\Components\FileUpload::make('proof_of_payment_url')
+                Forms\Components\Placeholder::make('proof_of_payment_url')
                     ->label('Bukti Bayar')
-                    ->formatStateUsing(function($value){
-                        //if contains 'storage/' remove it
-                        if(strpos($value, 'storage/') !== false){
-                            $value = substr($value, 8);
+                    ->content(function ($get){
+                        if($get('proof_of_payment_url') == null){
+                            return "Tidak ada Bukti Bayar";
                         }
-                        return $value;
-                    })
-                    ->directory('proof_of_payment'),
+                        $url = $get('proof_of_payment_url');
+                        if(strpos($url, 'storage/') !== false){
+                            $url = substr($url, 8);
+                        }
+                        return new HtmlString('<img src="'.asset($url).'" style="max-width: 100%; max-height: 200px;">');
+                    }),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user','name')
                     ->label('Diverifikasi Oleh')
