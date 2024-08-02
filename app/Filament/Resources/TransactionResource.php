@@ -37,7 +37,18 @@ class TransactionResource extends Resource
                 Forms\Components\Textarea::make('description')
                     ->label('Deskripsi')
                     ->columnSpanFull(),
-                Forms\Components\Placeholder::make('proof_of_payment_url')
+   
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user','name')
+                    ->label('Diverifikasi Oleh')
+                    ->hint('Kosongkan jika belum diverifikasi'),
+                
+                
+                Forms\Components\Select::make('member_id')
+                    ->label('Pengguna')
+                    ->required()
+                    ->relationship('member','name'),
+                    Forms\Components\Placeholder::make('proof_of_payment_url')
                     ->label('Bukti Bayar')
                     ->content(function ($get){
                         if($get('proof_of_payment_url') == null){
@@ -48,6 +59,9 @@ class TransactionResource extends Resource
                             $url = substr($url, 8);
                         }
                         return new HtmlString('
+                        <div>
+                            <a style="color:orange" href="'.asset('storage/'.$url).'" target="_blank" class="text-blue-500">Lihat Layar Penuh</a>
+                        </div>
                         <div class="" style="
                             overflow-y: scroll;
                             height: 300px;
@@ -63,15 +77,6 @@ class TransactionResource extends Resource
                     
                         ');
                     }),
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user','name')
-                    ->label('Diverifikasi Oleh')
-                    ->hint('Kosongkan jika belum diverifikasi'),
-                
-                Forms\Components\Select::make('member_id')
-                    ->label('Pengguna')
-                    ->required()
-                    ->relationship('member','name'),
                 Repeater::make('transaction_modules')
                     ->label('Modul yang Ditransaksikan')
                     ->relationship('transaction_modules')
