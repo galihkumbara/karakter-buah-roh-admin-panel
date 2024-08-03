@@ -189,9 +189,9 @@ class TransactionResource extends Resource
                         if($record->proof_of_payment_url == null){
                             return new HtmlString('
                                 <div class="text-sm text-gray-600 text-center">
-                                    <p class="text-red-600 font-bold">Transaksi ini tidak memiliki bukti pembayaran</p>
-                                    <p>Transaksi ini akan diverifikasi oleh <b>'.auth()->user()->name.'</b></p>
-                                    <p>Setelah diverifikasi, modul yang dibeli akan otomatis aktif pada akun pengguna</p>  
+                                    <p class="fi-modal-description text-sm text-gray-500 dark:text-gray-400 mt-2 font-bold">Transaksi ini tidak memiliki bukti pembayaran</p>
+                                    <p class="fi-modal-description text-sm text-gray-500 dark:text-gray-400 mt-2">Transaksi ini akan diverifikasi oleh <b>'.auth()->user()->name.'</b></p>
+                                    <p class="fi-modal-description text-sm text-gray-500 dark:text-gray-400 mt-2">Setelah diverifikasi, modul yang dibeli akan otomatis aktif pada akun pengguna</p>  
                                 </div>
                             ');
                         }
@@ -200,9 +200,11 @@ class TransactionResource extends Resource
                             $proof_of_payment_url = substr($proof_of_payment_url, 8);
                         }
                         return new HtmlString('
-                            <div class="w-100 overflow-y-scroll">
-                                <img src="'.asset('storage/'.$proof_of_payment_url).'" style="width: 100%;">
-                                <div class="text-sm text-gray-600 text-center">
+                            <div class="w-100 ">
+                                <div style="height:300px; overflow-y:scroll">
+                                    <img src="'.asset('storage/'.$proof_of_payment_url).'" style="width: 100%;">
+                                </div>
+                                <div class="fi-modal-description text-sm text-gray-500 dark:text-gray-400 mt-2">
                                     <p>Transaksi ini akan diverifikasi oleh <b>'.auth()->user()->name.'</b></p>
                                     <p>Setelah diverifikasi, modul yang dibeli akan otomatis aktif pada akun pengguna</p>  
                                 </div>
