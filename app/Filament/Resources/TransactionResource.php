@@ -200,8 +200,8 @@ class TransactionResource extends Resource
                             $proof_of_payment_url = substr($proof_of_payment_url, 8);
                         }
                         return new HtmlString('
-                            <div class="w-100 ">
-                                <div style="height:300px; overflow-y:scroll">
+                            <div class="w-100 text-center">
+                                <div style="height:300px;margin-bottom:10px; overflow-y:scroll">
                                     <img src="'.asset('storage/'.$proof_of_payment_url).'" style="width: 100%;">
                                 </div>
                                 <div class="fi-modal-description text-sm text-gray-500 dark:text-gray-400 mt-2">
