@@ -17,6 +17,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
+use Nette\Utils\Html;
 
 class TransactionResource extends Resource
 {
@@ -48,7 +49,7 @@ class TransactionResource extends Resource
                     ->label('Pengguna')
                     ->required()
                     ->relationship('member','name'),
-                    Forms\Components\Placeholder::make('proof_of_payment_url')
+                                 Forms\Components\Placeholder::make('proof_of_payment_url')
                     ->label('Bukti Bayar')
                     ->content(function ($get){
                         if($get('proof_of_payment_url') == null){
@@ -123,6 +124,7 @@ class TransactionResource extends Resource
                         }
                         return $proof_of_payment_url;
                     })
+                    
                 
 
                     ->label('Bukti Bayar'),
@@ -183,6 +185,30 @@ class TransactionResource extends Resource
                     ->modalDescription('Apakah Anda yakin ingin memverifikasi transaksi ini?')
                     ->modalSubmitActionLabel('Verifikasi')
                     ->modalCancelActionLabel('Batal')
+                    ->modalContent(function(Transaction $record){
+                        if($record->proof_of_payment_url == null){
+                            return new HtmlString('
+                                <div class="text-sm text-gray-600 text-center">
+                                    <p class="text-red-600 font-bold">Transaksi ini tidak memiliki bukti pembayaran</p>
+                                    <p>Transaksi ini akan diverifikasi oleh <b>'.auth()->user()->name.'</b></p>
+                                    <p>Setelah diverifikasi, modul yang dibeli akan otomatis aktif pada akun pengguna</p>  
+                                </div>
+                            ');
+                        }
+                        $proof_of_payment_url = $record->proof_of_payment_url;
+                        if(strpos($proof_of_payment_url, 'storage/') !== false){
+                            $proof_of_payment_url = substr($proof_of_payment_url, 8);
+                        }
+                        return new HtmlString('
+                            <div class="w-100 overflow-y-scroll">
+                                <img src="'.asset('storage/'.$proof_of_payment_url).'" style="width: 100%;">
+                                <div class="text-sm text-gray-600 text-center">
+                                    <p>Transaksi ini akan diverifikasi oleh <b>'.auth()->user()->name.'</b></p>
+                                    <p>Setelah diverifikasi, modul yang dibeli akan otomatis aktif pada akun pengguna</p>  
+                                </div>
+                            </div>
+                        ');
+                    })
                     ->label(function(Transaction $record){
                         return $record->user_id == null ? 'Verifikasi' : 'Terverifikasi';
                     }),
