@@ -195,7 +195,6 @@ class MemberController extends Controller
         }
 
         $newPassword = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 8);
-        $encryptedPassword = $this->encrypt($newPassword);
         $member->password = bcrypt($newPassword);
         $member->save();
 

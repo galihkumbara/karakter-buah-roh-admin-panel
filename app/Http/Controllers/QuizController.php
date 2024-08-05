@@ -152,7 +152,7 @@ class QuizController extends Controller
         //append to quiz['answers'] another mock answer
         $quiz["answers"][] = [
             "id" => 99999,
-            "choice" => null,
+            "choice" => MemberQuestion::where('member_id', $member)->where('member_quiz_id', MemberQuiz::where('member_id', $member)->where('quiz_id', $quiz->id)->first()->id)->where('question_id', 99999)->first()->answer,
             "answer" => null,
             "status" => 1,
             "open_question" => MemberQuiz::where('member_id', $member)->where('quiz_id', $quiz->id)->first()->open_answer,
