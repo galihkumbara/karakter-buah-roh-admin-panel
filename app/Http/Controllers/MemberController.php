@@ -199,7 +199,7 @@ class MemberController extends Controller
         $member->password = bcrypt($newPassword);
         $member->save();
 
-        return ResponseHelper::success(['new_password' => $encryptedPassword]);
+        return ResponseHelper::success(['new_password' => $newPassword]);
     }
 
     private function encrypt($data)
