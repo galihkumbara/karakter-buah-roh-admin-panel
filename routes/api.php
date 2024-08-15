@@ -20,6 +20,7 @@ use App\Http\Controllers\ReligionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\VillageController;
 use App\Models\Character;
+use App\Models\Member;
 use App\Models\MemberModule;
 use App\Models\QuestionnaireQuestionMember;
 use App\Models\Transaction;
@@ -54,7 +55,23 @@ Route::apiResource('location/city', RegencyController::class);
 Route::apiResource('location/district', DistrictController::class);
 Route::apiResource('/contents', ContentController::class);
 Route::get('user/quiz/{id}/results/{member}', [QuizController::class, 'results']);
-
+Route::get('/checkemail', function(Request $request){
+    $email = $request->email;
+    $member = Member::where('email', $email)->first();
+    if($member){
+        return ResponseHelper::success([
+            'available' => 0,
+            'message' => 'Email already exist',
+            'description' => 'Email sudah terdaftar, silahkan coba dengan email lain'
+        ]);
+    }else{
+        return ResponseHelper::success([
+            'message' => 'Email not exist',
+            'available' => 1,
+            'description' => 'Silahkan lanjut mengisi data diri'
+        ]);
+    }
+});
 Route::get('user/{user_id}/transactions/onprogress', [TransactionController::class, 'onProgress']);
 
 Route::get('/user/{user_id}/questionnaires/not_finished', [QuestionnaireController::class, 'userNotDoneQuestionnaire']);
