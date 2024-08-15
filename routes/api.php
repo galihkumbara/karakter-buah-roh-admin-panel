@@ -55,7 +55,7 @@ Route::apiResource('location/city', RegencyController::class);
 Route::apiResource('location/district', DistrictController::class);
 Route::apiResource('/contents', ContentController::class);
 Route::get('user/quiz/{id}/results/{member}', [QuizController::class, 'results']);
-Route::get('/checkemail', function(Request $request){
+Route::post('/checkemail', function(Request $request){
     $email = $request->email;
     $member = Member::where('email', $email)->first();
     if($member){
